@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><script type="application/json" data-od-external-dependencies>["https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css","https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"]</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokemon Web Client</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23ef4444'/><path d='M2 50h96' stroke='%230f172a' stroke-width='6'/><circle cx='50' cy='50' r='16' fill='%23ffffff' stroke='%230f172a' stroke-width='6'/><path d='M50 2a48 48 0 0 1 48 48H2A48 48 0 0 1 50 2z' fill='%23ef4444'/><path d='M50 98a48 48 0 0 1-48-48h96a48 48 0 0 1-48 48z' fill='%23ffffff'/><circle cx='50' cy='50' r='14' fill='%23ffffff'/><circle cx='50' cy='50' r='6' fill='%230f172a'/></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-black: #06080d;
+      --bg-surface: #0d111a;
+      --bg-card: rgba(16, 22, 34, 0.75);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.18);
+      
+      --color-electric: #f59e0b;
+      --color-electric-glow: rgba(245, 158, 11, 0.25);
+      
+      --color-water: #2563eb;
+      --color-water-light: #38bdf8;
+      --color-water-glow: rgba(37, 99, 235, 0.3);
+      
+      --color-fire: #dc2626;
+      --color-fire-light: #f97316;
+      --color-fire-glow: rgba(249, 115, 22, 0.25);
+      
+      --color-grass: #059669;
+      --color-grass-light: #10b981;
+      --color-grass-glow: rgba(16, 185, 129, 0.25);
+      
+      --color-psychic: #7c3aed;
+      --color-psychic-light: #c084fc;
+      --color-psychic-glow: rgba(168, 85, 247, 0.25);
+
+      --color-dragon: #6366f1;
+      --color-dragon-light: #818cf8;
+
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-dim: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-black);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, rgba(245, 158, 11, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 50% 75%, rgba(124, 58, 237, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 80% 85%, rgba(220, 38, 38, 0.08) 0%, transparent 40%);
+      background-attachment: fixed;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header {
+      position: relative;
+      z-index: 10;
+      padding: 40px 24px 30px 24px;
+      text-align: center;
+      background: rgba(13, 17, 26, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: var(--color-electric);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .header-badge i {
+      font-size: 0.85rem;
+    }
+
+    .brand-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .pokeball-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #ef4444 45%, #ffffff 55%);
+      border: 3px solid #0f172a;
+      box-shadow: 0 0 16px rgba(239, 68, 68, 0.4);
+      position: relative;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .pokeball-icon::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #0f172a;
+      transform: translateY(-50%);
+    }
+
+    .pokeball-icon::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      background: #ffffff;
+      border: 3px solid #0f172a;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .brand-title-gradient {
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    .controls-wrapper {
+      max-width: 800px;
+      margin: 28px auto 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .search-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 14px 20px 14px 48px;
+      background: rgba(20, 27, 44, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .search-container input:focus {
+      border-color: rgba(56, 189, 248, 0.5);
+      background: rgba(24, 33, 54, 0.95);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.2), inset 0 0 10px rgba(56, 189, 248, 0.05);
+    }
+
+    .search-container input::placeholder {
+      color: var(--text-dim);
+    }
+
+    .search-container .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      font-size: 1rem;
+      pointer-events: none;
+    }
+
+    .filter-pills {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      padding: 7px 16px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.09);
+      color: var(--text-primary);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.3), rgba(124, 58, 237, 0.3));
+      border-color: rgba(56, 189, 248, 0.5);
+      color: #ffffff;
+      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.25);
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      max-width: 1240px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 40px 24px 60px 24px;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 24px;
+    }
+
+    .game-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                  box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                  border-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--card-accent-gradient, linear-gradient(90deg, #3b82f6, #8b5cf6));
+      opacity: 0.85;
+      transition: opacity 0.3s ease, height 0.3s ease;
+    }
+
+    .game-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--card-border-hover, rgba(56, 189, 248, 0.35));
+      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), var(--card-shadow, 0 0 25px rgba(37, 99, 235, 0.15));
+    }
+
+    .game-card:hover::before {
+      height: 4px;
+      opacity: 1;
+    }
+
+    .game-card[data-theme="water"] {
+      --card-accent-gradient: linear-gradient(90deg, var(--color-water), var(--color-water-light));
+      --card-border-hover: rgba(56, 189, 248, 0.4);
+      --card-shadow: 0 0 25px var(--color-water-glow);
+      --icon-bg: rgba(37, 99, 235, 0.15);
+      --icon-color: #38bdf8;
+      --badge-bg: rgba(37, 99, 235, 0.18);
+      --badge-color: #60a5fa;
+      --btn-grad: linear-gradient(135deg, #2563eb, #1d4ed8);
+      --btn-hover-grad: linear-gradient(135deg, #3b82f6, #2563eb);
+      --btn-glow: rgba(37, 99, 235, 0.4);
+    }
+
+    .game-card[data-theme="grass"] {
+      --card-accent-gradient: linear-gradient(90deg, var(--color-grass), var(--color-grass-light));
+      --card-border-hover: rgba(16, 185, 129, 0.4);
+      --card-shadow: 0 0 25px var(--color-grass-glow);
+      --icon-bg: rgba(16, 185, 129, 0.15);
+      --icon-color: #34d399;
+      --badge-bg: rgba(16, 185, 129, 0.18);
+      --badge-color: #34d399;
+      --btn-grad: linear-gradient(135deg, #059669, #047857);
+      --btn-hover-grad: linear-gradient(135deg, #10b981, #059669);
+      --btn-glow: rgba(16, 185, 129, 0.4);
+    }
+
+    .game-card[data-theme="electric"] {
+      --card-accent-gradient: linear-gradient(90deg, #d97706, var(--color-electric));
+      --card-border-hover: rgba(245, 158, 11, 0.4);
+      --card-shadow: 0 0 25px var(--color-electric-glow);
+      --icon-bg: rgba(245, 158, 11, 0.15);
+      --icon-color: #fbbf24;
+      --badge-bg: rgba(245, 158, 11, 0.18);
+      --badge-color: #fbbf24;
+      --btn-grad: linear-gradient(135deg, #d97706, #b45309);
+      --btn-hover-grad: linear-gradient(135deg, #f59e0b, #d97706);
+      --btn-glow: rgba(245, 158, 11, 0.4);
+    }
+
+    .game-card[data-theme="fire"] {
+      --card-accent-gradient: linear-gradient(90deg, var(--color-fire), var(--color-fire-light));
+      --card-border-hover: rgba(249, 115, 22, 0.4);
+      --card-shadow: 0 0 25px var(--color-fire-glow);
+      --icon-bg: rgba(239, 68, 68, 0.15);
+      --icon-color: #f87171;
+      --badge-bg: rgba(239, 68, 68, 0.18);
+      --badge-color: #f87171;
+      --btn-grad: linear-gradient(135deg, #dc2626, #b91c1c);
+      --btn-hover-grad: linear-gradient(135deg, #ef4444, #dc2626);
+      --btn-glow: rgba(220, 38, 38, 0.4);
+    }
+
+    .game-card[data-theme="psychic"] {
+      --card-accent-gradient: linear-gradient(90deg, var(--color-psychic), var(--color-psychic-light));
+      --card-border-hover: rgba(168, 85, 247, 0.4);
+      --card-shadow: 0 0 25px var(--color-psychic-glow);
+      --icon-bg: rgba(124, 58, 237, 0.15);
+      --icon-color: #c084fc;
+      --badge-bg: rgba(124, 58, 237, 0.18);
+      --badge-color: #c084fc;
+      --btn-grad: linear-gradient(135deg, #7c3aed, #6d28d9);
+      --btn-hover-grad: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      --btn-glow: rgba(124, 58, 237, 0.4);
+    }
+
+    .game-card[data-theme="dragon"] {
+      --card-accent-gradient: linear-gradient(90deg, var(--color-dragon), #a855f7);
+      --card-border-hover: rgba(129, 140, 248, 0.4);
+      --card-shadow: 0 0 25px rgba(99, 102, 241, 0.25);
+      --icon-bg: rgba(99, 102, 241, 0.15);
+      --icon-color: #818cf8;
+      --badge-bg: rgba(99, 102, 241, 0.18);
+      --badge-color: #818cf8;
+      --btn-grad: linear-gradient(135deg, #4f46e5, #3730a3);
+      --btn-hover-grad: linear-gradient(135deg, #6366f1, #4f46e5);
+      --btn-glow: rgba(99, 102, 241, 0.4);
+    }
+
+    .game-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .game-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: var(--icon-bg, rgba(255, 255, 255, 0.08));
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: var(--icon-color, #38bdf8);
+      transition: transform 0.3s ease;
+    }
+
+    .game-card:hover .game-icon {
+      transform: scale(1.08) rotate(-3deg);
+    }
+
+    .game-category-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: var(--badge-bg, rgba(255, 255, 255, 0.08));
+      color: var(--badge-color, #94a3b8);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .game-info {
+      margin-bottom: 22px;
+    }
+
+    .game-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+      color: var(--text-primary);
+    }
+
+    .game-url-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      background: rgba(0, 0, 0, 0.25);
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      max-width: 100%;
+    }
+
+    .game-url-bar i {
+      font-size: 0.7rem;
+      opacity: 0.7;
+    }
+
+    .game-url-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .game-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .btn-launch {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 12px 20px;
+      background: var(--btn-grad, linear-gradient(135deg, #2563eb, #1d4ed8));
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 700;
+      border-radius: 12px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 14px var(--btn-glow, rgba(37, 99, 235, 0.35));
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-launch::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(
+        90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.3), 
+        transparent
+      );
+      transform: rotate(25deg);
+      transition: none;
+    }
+
+    .btn-launch:hover::after {
+      left: 130%;
+      transition: all 0.65s ease-in-out;
+    }
+
+    .btn-launch:hover {
+      background: var(--btn-hover-grad, linear-gradient(135deg, #3b82f6, #2563eb));
+      box-shadow: 0 6px 20px var(--btn-glow, rgba(37, 99, 235, 0.5));
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-launch i {
+      font-size: 0.85rem;
+      transition: transform 0.25s ease;
+    }
+
+    .btn-launch:hover i {
+      transform: translateX(3px);
+    }
+
+    .btn-copy {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .btn-copy:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--text-primary);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(56, 189, 248, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      z-index: 100;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast i {
+      color: #38bdf8;
+    }
+
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-secondary);
+      display: none;
+    }
+
+    .no-results i {
+      font-size: 3rem;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+
+    .no-results h3 {
+      font-size: 1.2rem;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    footer {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 24px;
+      background: rgba(13, 17, 26, 0.9);
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-dim);
+      font-size: 0.85rem;
+    }
+
+    footer span {
+      color: var(--color-electric);
+    }
+
+    @media (max-width: 640px) {
+      .brand-title {
+        font-size: 1.8rem;
+      }
+      header {
+        padding: 30px 16px 24px 16px;
+      }
+      main {
+        padding: 24px 16px;
+      }
+      .games-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-badge">
+      <i class="fa-solid fa-bolt"></i> Cliente Unificado
+    </div>
+    <h1 class="brand-title">
+      <span class="pokeball-icon"></span>
+      <span class="brand-title-gradient">Pokemon Web Client</span>
+    </h1>
+    <p>Acceso directo y optimizado a tus juegos y plataformas de Pokémon favoritas en la web</p>
+    
+    <div class="controls-wrapper">
+      <div class="search-container">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="searchInput" placeholder="Buscar juego por nombre, categoría o descripción...">
+      </div>
+
+      <div class="filter-pills" id="filterPills">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="Combate">Combate</button>
+        <button class="filter-btn" data-filter="Defensa">Defensa</button>
+        <button class="filter-btn" data-filter="Estrategia">Estrategia</button>
+        <button class="filter-btn" data-filter="Puzzle">Puzzle</button>
+        <button class="filter-btn" data-filter="Deportes">Deportes</button>
+        <button class="filter-btn" data-filter="Supervivencia">Supervivencia</button>
+        <button class="filter-btn" data-filter="Roguelike">Roguelike</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="games-grid" id="gamesGrid">
+
+      <!-- 1. Poke 2D Arena -->
+      <div class="game-card" data-name="poke 2d arena" data-category="Combate" data-theme="water">
+        <div>
+          <div class="game-header">
+            <div class="game-icon"><i class="fa-solid fa-chess-board"></i></div>
+            <span class="game-category-tag">Combate</span>
+          </div>
+          <div class="game-info">
+            <h2 class="game-title">Poke 2D Arena</h2>
+            <div class="game-url-bar">
+              <i class="fa-solid fa-globe"></i>
+              <span class="game-url-text">https://poke2darena.com/</span>
+            </div>
+            <p class="game-desc">Arena de combate 2D multijugador basada en Pokémon. Enfréntate en tiempo real contra entrenadores.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://poke2darena.com/" target="_blank" class="btn-launch">
+            <span>Jugar Ahora</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <button class="btn-copy" data-url="https://poke2darena.com/" title="Copiar Enlace">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. Poke Defense -->
+      <div class="game-card" data-name="poke defense" data-category="Defensa" data-theme="grass">
+        <div>
+          <div class="game-header">
+            <div class="game-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <span class="game-category-tag">Defensa</span>
+          </div>
+          <div class="game-info">
+            <h2 class="game-title">Poke Defense</h2>
+            <div class="game-url-bar">
+              <i class="fa-solid fa-globe"></i>
+              <span class="game-url-text">https://pokedefense.com/</span>
+            </div>
+            <p class="game-desc">Juego de defensa de torres con temática de Pokémon. Posiciona a tus criaturas estratégicamente.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://pokedefense.com/" target="_blank" class="btn-launch">
+            <span>Jugar Ahora</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <button class="btn-copy" data-url="https://pokedefense.com/" title="Copiar Enlace">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. Poke Jam -->
+      <div class="game-card" data-name="poke jam" data-category="Deportes" data-theme="electric">
+        <div>
+          <div class="game-header">
+            <div class="game-icon"><i class="fa-solid fa-basketball"></i></div>
+            <span class="game-category-tag">Deportes</span>
+          </div>
+          <div class="game-info">
+            <h2 class="game-title">Poke Jam</h2>
+            <div class="game-url-bar">
+              <i class="fa-solid fa-globe"></i>
+              <span class="game-url-text">https://pokejam.xyz/</span>
+            </div>
+            <p class="game-desc">Minijuegos y desafíos deportivos inspirados en el universo Pokémon para partidas dinámicas.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://pokejam.xyz/" target="_blank" class="btn-launch">
+            <span>Jugar Ahora</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <button class="btn-copy" data-url="https://pokejam.xyz/" title="Copiar Enlace">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4. Poke Versus -->
+      <div class="game-card" data-name="poke versus" data-category="Combate" data-theme="fire">
+        <div>
+          <div class="game-header">
+            <div class="game-icon"><i class="fa-solid fa-bolt"></i></div>
+            <span class="game-category-tag">Combate</span>
+          </div>
+          <div class="game-info">
+            <h2 class="game-title">Poke Versus</h2>
+            <div class="game-url-bar">
+              <i class="fa-solid fa-globe"></i>
+              <span class="game-url-text">https://pokeversus.com/</span>
+            </div>
+            <p class="game-desc">Batallas dinámicas y de acción entre entrenadores. Demuestra tu dominio en la arena.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://pokeversus.com/" target="_blank" class="btn-launch">
+            <span>Jugar Ahora</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <button class="btn-copy" data-url="https://pokeversus.com/" title="Copiar Enlace">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 5. Kanto Tactics -->
+      <div class="game-card" data-name="kanto tactics einoow" data-category="Estrategia" data-theme="psychic">
+        <div>
+          <div class="game-header">
+            <div class="game-icon"><i class="fa-solid fa-map"></i></div>
+            <span class="game-category-tag">Estrategia</span>
+          </div>
+          <div class="game-info">
+            <h2 class="game-title">Kanto Tactics</h2>
+            <div class="game-url-bar">
+              <i class="fa-solid fa-globe"></i>
+              <span class="game-url-text">https://einoow.com/kanto-tactics</span>
+            </div>
+            <p class="game-desc">Estrategia táctica por turnos ambientada en la emblemática región de Kanto.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://einoow.com/kanto-tactics" target="_blank" class="btn-launch">
+            <span>Jugar Ahora</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <button class="btn-copy" data-url="https://einoow.com/kanto-tactics" title="Copiar Enlace">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 6. Poke Isaac -->
+      <div class="game-card" data-name="poke isaac" data-category="Roguelike" data-theme="dragon">
+        <div>
+          <div class="game-header">
+            <div class="game-icon"><i class="fa-solid fa-skull"></i></div>
+            <span class="game-category-tag">Roguelike</span>
+          </div>
+          <div class="game-info">
+            <h2 class="game-title">Poke Isaac</h2>
+            <div class="game-url-bar">
+              <i class="fa-solid fa-globe"></i>
+              <span class="game-url-text">https://pokeisaac.com/</span>
+            </div>
+            <p class="game-desc">Roguelike dungeon crawler inspirado en The Binding of Isaac con estética y mecánicas Pokémon.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://pokeisaac.com/" target="_blank" class="btn-launch">
+            <span>Jugar Ahora</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <button class="btn-copy" data-url="https://pokeisaac.com/" title="Copiar Enlace">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 7. Poke Survivor -->
+      <div class="game-card" data-name="poke survivor" data-category="Supervivencia" data-theme="fire">
+        <div>
+          <div class="game-header">
+            <div class="game-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
+            <span class="game-category-tag">Supervivencia</span>
+          </div>
+          <div class="game-info">
+            <h2 class="game-title">Poke Survivor</h2>
+            <div class="game-url-bar">
+              <i class="fa-solid fa-globe"></i>
+              <span class="game-url-text">https://pokesurvivor.xyz/</span>
+            </div>
+            <p class="game-desc">Juego de supervivencia contra hordas masivas al estilo Vampire Survivors con ataques Pokémon.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://pokesurvivor.xyz/" target="_blank" class="btn-launch">
+            <span>Jugar Ahora</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <button class="btn-copy" data-url="https://pokesurvivor.xyz/" title="Copiar Enlace">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 8. Poke Bonk -->
+      <div class="game-card" data-name="poke bonk" data-category="Supervivencia" data-theme="electric">
+        <div>
+          <div class="game-header">
+            <div class="game-icon"><i class="fa-solid fa-shield"></i></div>
+            <span class="game-category-tag">Supervivencia</span>
+          </div>
+          <div class="game-info">
+            <h2 class="game-title">Poke Bonk</h2>
+            <div class="game-url-bar">
+              <i class="fa-solid fa-globe"></i>
+              <span class="game-url-text">https://pokebonk.com/</span>
+            </div>
+            <p class="game-desc">Divertidísimo juego de supervivencia y choques caóticos entre Pokémon.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://pokebonk.com/" target="_blank" class="btn-launch">
+            <span>Jugar Ahora</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <button class="btn-copy" data-url="https://pokebonk.com/" title="Copiar Enlace">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 9. Poke Tactics (ES) -->
+      <div class="game-card" data-name="poke tactics" data-category="Estrategia" data-theme="grass">
+        <div>
+          <div class="game-header">
+            <div class="game-icon"><i class="fa-solid fa-chess"></i></div>
+            <span class="game-category-tag">Estrategia</span>
+          </div>
+          <div class="game-info">
+            <h2 class="game-title">Poke Tactics</h2>
+            <div class="game-url-bar">
+              <i class="fa-solid fa-globe"></i>
+              <span class="game-url-text">https://poketactics.xyz/es</span>
+            </div>
+            <p class="game-desc">Juego de tácticas y combate estratégico Pokémon en español.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://poketactics.xyz/es" target="_blank" class="btn-launch">
+            <span>Jugar Ahora</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <button class="btn-copy" data-url="https://poketactics.xyz/es" title="Copiar Enlace">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 10. Daily Red Game -->
+      <div class="game-card" data-name="daily red game" data-category="Puzzle" data-theme="water">
+        <div>
+          <div class="game-header">
+            <div class="game-icon"><i class="fa-solid fa-calendar-day"></i></div>
+            <span class="game-category-tag">Puzzle</span>
+          </div>
+          <div class="game-info">
+            <h2 class="game-title">Daily Red Game</h2>
+            <div class="game-url-bar">
+              <i class="fa-solid fa-globe"></i>
+              <span class="game-url-text">https://dailyredgame.online/</span>
+            </div>
+            <p class="game-desc">Desafío diario de puzzle basado en Pokémon Rojo clásico.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://dailyredgame.online/" target="_blank" class="btn-launch">
+            <span>Jugar Ahora</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <button class="btn-copy" data-url="https://dailyredgame.online/" title="Copiar Enlace">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 11. Poke Merge -->
+      <div class="game-card" data-name="poke merge" data-category="Roguelike" data-theme="electric">
+        <div>
+          <div class="game-header">
+            <div class="game-icon"><i class="fa-solid fa-shapes"></i></div>
+            <span class="game-category-tag">Roguelike</span>
+          </div>
+          <div class="game-info">
+            <h2 class="game-title">Poke Merge</h2>
+            <div class="game-url-bar">
+              <i class="fa-solid fa-globe"></i>
+              <span class="game-url-text">https://poke-merge.xyz/</span>
+            </div>
+            <p class="game-desc">Juego roguelike combinando Pokémon para descubrir evoluciones y progresar.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://poke-merge.xyz/" target="_blank" class="btn-launch">
+            <span>Jugar Ahora</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <button class="btn-copy" data-url="https://poke-merge.xyz/" title="Copiar Enlace">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 12. Pokemon Royale -->
+      <div class="game-card" data-name="pokemon royale" data-category="Supervivencia" data-theme="fire">
+        <div>
+          <div class="game-header">
+            <div class="game-icon"><i class="fa-solid fa-crown"></i></div>
+            <span class="game-category-tag">Supervivencia</span>
+          </div>
+          <div class="game-info">
+            <h2 class="game-title">Pokemon Royale</h2>
+            <div class="game-url-bar">
+              <i class="fa-solid fa-globe"></i>
+              <span class="game-url-text">https://pokemonroyale.com/</span>
+            </div>
+            <p class="game-desc">Batalla real y supervivencia multijugador con temática Pokémon.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://pokemonroyale.com/" target="_blank" class="btn-launch">
+            <span>Jugar Ahora</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <button class="btn-copy" data-url="https://pokemonroyale.com/" title="Copiar Enlace">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 13. Pokemon Redstone -->
+      <div class="game-card" data-name="pokemon redstone" data-category="Estrategia" data-theme="psychic">
+        <div>
+          <div class="game-header">
+            <div class="game-icon"><i class="fa-solid fa-cube"></i></div>
+            <span class="game-category-tag">Estrategia</span>
+          </div>
+          <div class="game-info">
+            <h2 class="game-title">Pokemon Redstone</h2>
+            <div class="game-url-bar">
+              <i class="fa-solid fa-globe"></i>
+              <span class="game-url-text">https://pokemon-redstone.pages.dev/</span>
+            </div>
+            <p class="game-desc">Mundo creativo y de estrategia inspirado en Redstone y Pokémon.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://pokemon-redstone.pages.dev/" target="_blank" class="btn-launch">
+            <span>Jugar Ahora</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <button class="btn-copy" data-url="https://pokemon-redstone.pages.dev/" title="Copiar Enlace">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 14. All 22 Pokémon -->
+      <div class="game-card" data-name="all22pokemon football" data-category="Deportes" data-theme="water">
+        <div>
+          <div class="game-header">
+            <div class="game-icon"><i class="fa-solid fa-football"></i></div>
+            <span class="game-category-tag">Deportes</span>
+          </div>
+          <div class="game-info">
+            <h2 class="game-title">All 22 Pokémon</h2>
+            <div class="game-url-bar">
+              <i class="fa-solid fa-globe"></i>
+              <span class="game-url-text">https://all22pokemon.com/</span>
+            </div>
+            <p class="game-desc">Juego de fútbol americano estratégico con personajes Pokémon.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://all22pokemon.com/" target="_blank" class="btn-launch">
+            <span>Jugar Ahora</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <button class="btn-copy" data-url="https://all22pokemon.com/" title="Copiar Enlace">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 15. Pokedoku -->
+      <div class="game-card" data-name="pokedoku" data-category="Puzzle" data-theme="grass">
+        <div>
+          <div class="game-header">
+            <div class="game-icon"><i class="fa-solid fa-table-cells"></i></div>
+            <span class="game-category-tag">Puzzle</span>
+          </div>
+          <div class="game-info">
+            <h2 class="game-title">Pokedoku</h2>
+            <div class="game-url-bar">
+              <i class="fa-solid fa-globe"></i>
+              <span class="game-url-text">https://pokedoku.com/</span>
+            </div>
+            <p class="game-desc">Sudoku diario de Pokémon basado en tipos, regiones y características.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://pokedoku.com/" target="_blank" class="btn-launch">
+            <span>Jugar Ahora</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <button class="btn-copy" data-url="https://pokedoku.com/" title="Copiar Enlace">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 16. Pokedle -->
+      <div class="game-card" data-name="pokedle" data-category="Puzzle" data-theme="dragon">
+        <div>
+          <div class="game-header">
+            <div class="game-icon"><i class="fa-solid fa-font"></i></div>
+            <span class="game-category-tag">Puzzle</span>
+          </div>
+          <div class="game-info">
+            <h2 class="game-title">Pokedle</h2>
+            <div class="game-url-bar">
+              <i class="fa-solid fa-globe"></i>
+              <span class="game-url-text">https://pokedle.net/</span>
+            </div>
+            <p class="game-desc">Wordle diario de puzzle adivinando el Pokémon oculto y sus pistas.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://pokedle.net/" target="_blank" class="btn-launch">
+            <span>Jugar Ahora</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <button class="btn-copy" data-url="https://pokedle.net/" title="Copiar Enlace">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="no-results" id="noResults">
+        <i class="fa-solid fa-ghost"></i>
+        <h3>No se encontraron juegos</h3>
+        <p>Intenta con otro término de búsqueda o categoría.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>Pokemon Web Client &bull; Cliente creado para acceso rápido <span>⚡</span></p>
+  </footer>
+
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-check-circle"></i>
+    <span id="toastMsg">¡Enlace copiado al portapapeles!</span>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const gamesGrid = document.getElementById('gamesGrid');
+    const gameCards = Array.from(gamesGrid.getElementsByClassName('game-card'));
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const noResults = document.getElementById('noResults');
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMsg');
+
+    let activeCategory = 'all';
+
+    function filterGames() {
+      const term = searchInput.value.toLowerCase().trim();
+      let visibleCount = 0;
+
+      gameCards.forEach(card => {
+        const name = card.getAttribute('data-name');
+        const category = card.getAttribute('data-category');
+        const title = card.querySelector('.game-title').textContent.toLowerCase();
+        const desc = card.querySelector('.game-desc').textContent.toLowerCase();
+
+        const matchesSearch = name.includes(term) || title.includes(term) || desc.includes(term);
+        const matchesCategory = (activeCategory === 'all') || (category === activeCategory);
+
+        if (matchesSearch && matchesCategory) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (visibleCount === 0) {
+        noResults.style.display = 'block';
+      } else {
+        noResults.style.display = 'none';
+      }
+    }
+
+    searchInput.addEventListener('input', filterGames);
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCategory = btn.getAttribute('data-filter');
+        filterGames();
+      });
+    });
+
+    document.querySelectorAll('.btn-copy').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const url = btn.getAttribute('data-url');
+        if (url) {
+          navigator.clipboard.writeText(url).then(() => {
+            showToast('¡Enlace copiado al portapapeles!');
+          }).catch(() => {
+            showToast('Enlace: ' + url);
+          });
+        }
+      });
+    });
+
+    let toastTimeout;
+    function showToast(message) {
+      toastMsg.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+  </script>
+
+</body>
+</html>
