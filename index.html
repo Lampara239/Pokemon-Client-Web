@@ -252,6 +252,28 @@
       box-shadow: 0 2px 10px rgba(37, 99, 235, 0.25);
     }
 
+    .btn-suggest-game {
+      padding: 7px 18px;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(220, 38, 38, 0.2));
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: var(--color-electric);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+    }
+
+    .btn-suggest-game:hover {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.35), rgba(220, 38, 38, 0.35));
+      border-color: var(--color-electric);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25);
+    }
+
     main {
       position: relative;
       z-index: 1;
@@ -619,6 +641,131 @@
       color: var(--color-electric);
     }
 
+    /* Modal Formulario */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-container {
+      background: #0d121d;
+      border: 1px solid var(--border-hover);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75), 0 0 30px rgba(56, 189, 248, 0.15);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 480px;
+      padding: 28px;
+      position: relative;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .modal-close:hover {
+      color: var(--text-primary);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .form-group input, .form-group select {
+      background: rgba(20, 27, 44, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      border-color: rgba(56, 189, 248, 0.6);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn-cancel {
+      padding: 10px 18px;
+      border-radius: 10px;
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-submit {
+      padding: 10px 22px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     @media (max-width: 640px) {
       .brand-title {
         font-size: 1.8rem;
@@ -662,6 +809,9 @@
         <button class="filter-btn" data-filter="Deportes">Deportes</button>
         <button class="filter-btn" data-filter="Supervivencia">Supervivencia</button>
         <button class="filter-btn" data-filter="Roguelike">Roguelike</button>
+        <button class="btn-suggest-game" id="btnOpenModal">
+          <i class="fa-solid fa-circle-plus"></i> Proponer Juego
+        </button>
       </div>
     </div>
   </header>
@@ -1114,31 +1264,95 @@
     <p>Pokemon Web Client &bull; Cliente creado para acceso rápido <span>⚡</span></p>
   </footer>
 
+  <!-- Modal para proponer / agregar juego -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-gamepad" style="color: var(--color-electric);"></i> Añadir Nuevo Juego</h3>
+        <button class="modal-close" id="btnCloseModal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="formAddGame">
+        <div class="form-group">
+          <label for="gameName">Nombre del Juego</label>
+          <input type="text" id="gameName" placeholder="Ej: PokeRogue" required>
+        </div>
+        <div class="form-group">
+          <label for="gameUrl">URL del Juego (HTTPS)</label>
+          <input type="url" id="gameUrl" placeholder="https://..." required>
+        </div>
+        <div class="form-group">
+          <label for="gameCategory">Categoría</label>
+          <select id="gameCategory">
+            <option value="Combate">Combate</option>
+            <option value="Defensa">Defensa</option>
+            <option value="Estrategia">Estrategia</option>
+            <option value="Puzzle">Puzzle</option>
+            <option value="Deportes">Deportes</option>
+            <option value="Supervivencia">Supervivencia</option>
+            <option value="Roguelike">Roguelike</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" id="btnCancelModal">Cancelar</button>
+          <button type="submit" class="btn-submit" id="btnSubmitGame">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Publicar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div class="toast" id="toast">
     <i class="fa-solid fa-check-circle"></i>
     <span id="toastMsg">¡Enlace copiado al portapapeles!</span>
   </div>
 
   <script>
+    // -------------------------------------------------------------
+    // CONFIGURACIÓN DE BASE DE DATOS (Google Apps Script)
+    // -------------------------------------------------------------
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw45co-UzeQ9ziGagge7g5GlIOG8gi1KecClLKdoy-jAaIZNNiomj4N1wUDm2OfUEVFnQ/exec";
+
     const searchInput = document.getElementById('searchInput');
     const gamesGrid = document.getElementById('gamesGrid');
-    const gameCards = Array.from(gamesGrid.getElementsByClassName('game-card'));
     const filterBtns = document.querySelectorAll('.filter-btn');
     const noResults = document.getElementById('noResults');
     const toast = document.getElementById('toast');
     const toastMsg = document.getElementById('toastMsg');
 
+    // Elementos del Modal
+    const btnOpenModal = document.getElementById('btnOpenModal');
+    const btnCloseModal = document.getElementById('btnCloseModal');
+    const btnCancelModal = document.getElementById('btnCancelModal');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const formAddGame = document.getElementById('formAddGame');
+    const btnSubmitGame = document.getElementById('btnSubmitGame');
+
     let activeCategory = 'all';
+
+    // Mapas de temas e íconos para juegos nuevos que vengan del Sheet
+    const categoryThemeMap = {
+      'Combate': { theme: 'fire', icon: 'fa-bolt' },
+      'Defensa': { theme: 'grass', icon: 'fa-shield-halved' },
+      'Estrategia': { theme: 'psychic', icon: 'fa-chess' },
+      'Puzzle': { theme: 'water', icon: 'fa-puzzle-piece' },
+      'Deportes': { theme: 'electric', icon: 'fa-basketball' },
+      'Supervivencia': { theme: 'fire', icon: 'fa-users-viewfinder' },
+      'Roguelike': { theme: 'dragon', icon: 'fa-skull' }
+    };
 
     function filterGames() {
       const term = searchInput.value.toLowerCase().trim();
+      const allCards = Array.from(gamesGrid.getElementsByClassName('game-card'));
       let visibleCount = 0;
 
-      gameCards.forEach(card => {
-        const name = card.getAttribute('data-name');
-        const category = card.getAttribute('data-category');
-        const title = card.querySelector('.game-title').textContent.toLowerCase();
-        const desc = card.querySelector('.game-desc').textContent.toLowerCase();
+      allCards.forEach(card => {
+        const name = card.getAttribute('data-name') || '';
+        const category = card.getAttribute('data-category') || '';
+        const titleEl = card.querySelector('.game-title');
+        const descEl = card.querySelector('.game-desc');
+        const title = titleEl ? titleEl.textContent.toLowerCase() : '';
+        const desc = descEl ? descEl.textContent.toLowerCase() : '';
 
         const matchesSearch = name.includes(term) || title.includes(term) || desc.includes(term);
         const matchesCategory = (activeCategory === 'all') || (category === activeCategory);
@@ -1169,19 +1383,22 @@
       });
     });
 
-    document.querySelectorAll('.btn-copy').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const url = btn.getAttribute('data-url');
-        if (url) {
-          navigator.clipboard.writeText(url).then(() => {
-            showToast('¡Enlace copiado al portapapeles!');
-          }).catch(() => {
-            showToast('Enlace: ' + url);
-          });
-        }
+    function attachCopyEvents() {
+      document.querySelectorAll('.btn-copy').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          const url = btn.getAttribute('data-url');
+          if (url) {
+            navigator.clipboard.writeText(url).then(() => {
+              showToast('¡Enlace copiado al portapapeles!');
+            }).catch(() => {
+              showToast('Enlace: ' + url);
+            });
+          }
+        };
       });
-    });
+    }
+    attachCopyEvents();
 
     let toastTimeout;
     function showToast(message) {
@@ -1192,6 +1409,120 @@
         toast.classList.remove('show');
       }, 2500);
     }
+
+    // Modal Control
+    btnOpenModal.addEventListener('click', () => modalBackdrop.classList.add('open'));
+    [btnCloseModal, btnCancelModal].forEach(btn => {
+      btn.addEventListener('click', () => modalBackdrop.classList.remove('open'));
+    });
+    modalBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) modalBackdrop.classList.remove('open');
+    });
+
+    // -------------------------------------------------------------
+    // LEER JUEGOS DESDE GOOGLE SHEETS
+    // -------------------------------------------------------------
+    async function loadGamesFromSheet() {
+      if (!SCRIPT_URL) return;
+
+      try {
+        const res = await fetch(SCRIPT_URL);
+        const games = await res.json();
+
+        // Evita duplicar si ya existen en el HTML original por URL
+        const existingUrls = Array.from(document.querySelectorAll('.game-card .btn-launch')).map(a => a.href.replace(/\/$/, ""));
+
+        games.forEach(game => {
+          if (!game.nombre || !game.url) return;
+          const cleanUrl = String(game.url).trim().replace(/\/$/, "");
+          if (existingUrls.includes(cleanUrl)) return;
+
+          const cat = game.categoria || 'Combate';
+          const meta = categoryThemeMap[cat] || { theme: 'dragon', icon: 'fa-gamepad' };
+
+          const card = document.createElement('div');
+          card.className = 'game-card';
+          card.setAttribute('data-name', game.nombre.toLowerCase());
+          card.setAttribute('data-category', cat);
+          card.setAttribute('data-theme', meta.theme);
+
+          card.innerHTML = `
+            <div>
+              <div class="game-header">
+                <div class="game-icon"><i class="fa-solid ${meta.icon}"></i></div>
+                <span class="game-category-tag">${cat}</span>
+              </div>
+              <div class="game-info">
+                <h2 class="game-title">${game.nombre}</h2>
+                <div class="game-url-bar">
+                  <i class="fa-solid fa-globe"></i>
+                  <span class="game-url-text">${game.url}</span>
+                </div>
+                <p class="game-desc">Añadido por la comunidad de entrenadores.</p>
+              </div>
+            </div>
+            <div class="card-actions">
+              <a href="${game.url}" target="_blank" class="btn-launch">
+                <span>Jugar Ahora</span>
+                <i class="fa-solid fa-arrow-right-long"></i>
+              </a>
+              <button class="btn-copy" data-url="${game.url}" title="Copiar Enlace">
+                <i class="fa-regular fa-copy"></i>
+              </button>
+            </div>
+          `;
+
+          gamesGrid.insertBefore(card, noResults);
+        });
+
+        attachCopyEvents();
+        filterGames();
+      } catch (err) {
+        console.warn("No se pudieron cargar juegos de la hoja:", err);
+      }
+    }
+
+    // -------------------------------------------------------------
+    // ENVIAR JUEGO A GOOGLE SHEETS
+    // -------------------------------------------------------------
+    formAddGame.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nombre = document.getElementById('gameName').value.trim();
+      const url = document.getElementById('gameUrl').value.trim();
+      const categoria = document.getElementById('gameCategory').value;
+
+      btnSubmitGame.disabled = true;
+      btnSubmitGame.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+
+      try {
+        const res = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ nombre, url, categoria })
+        });
+
+        const data = await res.json();
+
+        if (data.status === 'success') {
+          showToast('¡Juego agregado con éxito a la biblioteca!');
+          formAddGame.reset();
+          modalBackdrop.classList.remove('open');
+          await loadGamesFromSheet();
+        } else {
+          alert('Error: ' + data.message);
+        }
+      } catch (err) {
+        console.error("Error al enviar juego:", err);
+        alert('Hubo un problema al conectar con el servidor.');
+      } finally {
+        btnSubmitGame.disabled = false;
+        btnSubmitGame.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Publicar';
+      }
+    });
+
+    // Iniciar lectura
+    loadGamesFromSheet();
   </script>
 
 </body>
