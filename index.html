@@ -1422,27 +1422,32 @@
     // -------------------------------------------------------------
     // LEER JUEGOS DESDE GOOGLE SHEETS
     // -------------------------------------------------------------
-    async function loadGamesFromSheet() {
+   async function loadGamesFromSheet() {
       if (!SCRIPT_URL) return;
 
       try {
         const res = await fetch(SCRIPT_URL);
         const games = await res.json();
 
-        // Evita duplicar si ya existen en el HTML original por URL
-        const existingUrls = Array.from(document.querySelectorAll('.game-card .btn-launch')).map(a => a.href.replace(/\/$/, ""));
+        const existingUrls = Array.from(document.querySelectorAll('.game-card .btn-launch'))
+          .map(a => a.href.replace(/\/$/, ""));
 
-        games.forEach(game => {
-          if (!game.nombre || !game.url) return;
-          const cleanUrl = String(game.url).trim().replace(/\/$/, "");
+        games.forEach(rawGame => {
+          // Extrae los valores sin importar mayúsculas o claves anómalas
+          const nombre = rawGame.nombre || rawGame.Nombre || "";
+          const url = rawGame.url || rawGame.Url || rawGame.URL || "";
+          const cat = rawGame.categoria || rawGame.Categoria || rawGame[""] || "Roguelike";
+
+          if (!nombre || !url) return;
+
+          const cleanUrl = String(url).trim().replace(/\/$/, "");
           if (existingUrls.includes(cleanUrl)) return;
 
-          const cat = game.categoria || 'Combate';
-          const meta = categoryThemeMap[cat] || { theme: 'dragon', icon: 'fa-gamepad' };
+          const meta = categoryThemeMap[cat] || { theme: 'dragon', icon: 'fa-skull' };
 
           const card = document.createElement('div');
           card.className = 'game-card';
-          card.setAttribute('data-name', game.nombre.toLowerCase());
+          card.setAttribute('data-name', nombre.toLowerCase());
           card.setAttribute('data-category', cat);
           card.setAttribute('data-theme', meta.theme);
 
@@ -1453,20 +1458,20 @@
                 <span class="game-category-tag">${cat}</span>
               </div>
               <div class="game-info">
-                <h2 class="game-title">${game.nombre}</h2>
+                <h2 class="game-title">${nombre}</h2>
                 <div class="game-url-bar">
                   <i class="fa-solid fa-globe"></i>
-                  <span class="game-url-text">${game.url}</span>
+                  <span class="game-url-text">${url}</span>
                 </div>
                 <p class="game-desc">Añadido por la comunidad de entrenadores.</p>
               </div>
             </div>
             <div class="card-actions">
-              <a href="${game.url}" target="_blank" class="btn-launch">
+              <a href="${url}" target="_blank" class="btn-launch">
                 <span>Jugar Ahora</span>
                 <i class="fa-solid fa-arrow-right-long"></i>
               </a>
-              <button class="btn-copy" data-url="${game.url}" title="Copiar Enlace">
+              <button class="btn-copy" data-url="${url}" title="Copiar Enlace">
                 <i class="fa-regular fa-copy"></i>
               </button>
             </div>
