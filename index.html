@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head><script type="application/json" data-od-external-dependencies>["https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css","https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"]</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,86 +8,167 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    /* -------------------------------------------------------------
+       VARIABLES Y PALETAS (MODO OSCURO POR DEFECTO)
+       ------------------------------------------------------------- */
     :root {
-      --bg-black: #06080d;
-      --bg-surface: #0d111a;
-      --bg-card: rgba(16, 22, 34, 0.75);
+      /* Base Noche Profunda */
+      --bg-base: #07090e;
+      --bg-header: rgba(11, 15, 23, 0.85);
+      --bg-card: rgba(15, 20, 31, 0.75);
       --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(255, 255, 255, 0.18);
+      --border-hover: rgba(255, 255, 255, 0.22);
       
-      --color-electric: #f59e0b;
-      --color-electric-glow: rgba(245, 158, 11, 0.25);
-      
-      --color-water: #2563eb;
-      --color-water-light: #38bdf8;
-      --color-water-glow: rgba(37, 99, 235, 0.3);
-      
-      --color-fire: #dc2626;
-      --color-fire-light: #f97316;
-      --color-fire-glow: rgba(249, 115, 22, 0.25);
-      
-      --color-grass: #059669;
-      --color-grass-light: #10b981;
-      --color-grass-glow: rgba(16, 185, 129, 0.25);
-      
-      --color-psychic: #7c3aed;
-      --color-psychic-light: #c084fc;
-      --color-psychic-glow: rgba(168, 85, 247, 0.25);
-
-      --color-dragon: #6366f1;
-      --color-dragon-light: #818cf8;
-
-      --text-primary: #f8fafc;
+      --text-primary: #e2e8f0;
       --text-secondary: #94a3b8;
       --text-dim: #64748b;
+      --input-bg: rgba(15, 20, 30, 0.8);
+
+      /* Tonos Oscuros Temáticos */
+      --color-red: #881337;
+      --color-green: #064e3b;
+      --color-purple: #4c1d95;
+      --color-blue: #1e3a8a;
+      
+      --badge-mobile-bg: rgba(6, 78, 59, 0.4);
+      --badge-mobile-border: #047857;
+      --badge-mobile-text: #6ee7b7;
+
+      --card-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.8);
+      --btn-text: #ffffff;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    /* -------------------------------------------------------------
+       MODO CLARO (PASTEL CANVAS CON FONDO CIAN)
+       ------------------------------------------------------------- */
+    [data-theme="light"] {
+      /* Fondo Cian Suave */
+      --bg-base: #e0f2fe;
+      --bg-header: rgba(255, 255, 255, 0.8);
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --border-subtle: rgba(14, 116, 144, 0.15);
+      --border-hover: rgba(14, 116, 144, 0.35);
+
+      --text-primary: #1e293b;
+      --text-secondary: #475569;
+      --text-dim: #64748b;
+      --input-bg: rgba(255, 255, 255, 0.9);
+
+      /* Tonos Pastel */
+      --color-red: #fda4af;       /* Rosa / Rojo pastel */
+      --color-green: #86efac;     /* Verde claro pastel */
+      --color-purple: #d8b4fe;    /* Morado pastel */
+      --color-yellow: #fde047;    /* Amarillo pastel */
+      --color-blue: #7dd3fc;      /* Azul cielo pastel */
+
+      --badge-mobile-bg: rgba(134, 239, 172, 0.4);
+      --badge-mobile-border: #4ade80;
+      --badge-mobile-text: #166534;
+
+      --card-shadow: 0 10px 25px -5px rgba(14, 116, 144, 0.12);
+      --btn-text: #0f172a;
     }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-black);
+      background-color: var(--bg-base);
       color: var(--text-primary);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       position: relative;
       overflow-x: hidden;
-      background-image: 
-        radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.12) 0%, transparent 45%),
-        radial-gradient(circle at 85% 20%, rgba(245, 158, 11, 0.1) 0%, transparent 40%),
-        radial-gradient(circle at 50% 75%, rgba(124, 58, 237, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 80% 85%, rgba(220, 38, 38, 0.08) 0%, transparent 40%);
-      background-attachment: fixed;
+      transition: background-color 0.4s ease, color 0.4s ease;
     }
 
-    body::before {
-      content: '';
+    /* -------------------------------------------------------------
+       FONDOS DECORATIVOS: NOCHE ESTRELLADA VS MANCHAS PASTEL
+       ------------------------------------------------------------- */
+    
+    /* MODO OSCURO: Estrellas estáticas en cielo nocturno */
+    .bg-canvas {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 40px 40px;
+      inset: 0;
       pointer-events: none;
       z-index: 0;
+      transition: opacity 0.5s ease;
     }
 
+    [data-theme="dark"] .bg-canvas {
+      background-image: 
+        radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(1.5px 1.5px at 100px 150px, #e2e8f0, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 240px 80px, #94a3b8, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 420px 300px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(1.5px 1.5px at 650px 120px, #cbd5e1, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 800px 450px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 950px 220px, #f8fafc, rgba(0,0,0,0)),
+        radial-gradient(1.5px 1.5px at 1150px 380px, #94a3b8, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 1300px 90px, #ffffff, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 550px 550px;
+      opacity: 0.85;
+    }
+
+    /* MODO CLARO: 4 Manchas de pintura pastel sobre fondo cian */
+    [data-theme="light"] .bg-canvas {
+      background: 
+        /* 1. Mancha Amarillo Pastel (Arriba Izquierda) */
+        radial-gradient(circle at 12% 18%, rgba(253, 224, 71, 0.45) 0%, transparent 35%),
+        /* 2. Mancha Morado Pastel (Arriba Derecha) */
+        radial-gradient(circle at 88% 22%, rgba(216, 180, 254, 0.5) 0%, transparent 40%),
+        /* 3. Mancha Rojo / Rosa Pastel (Abajo Izquierda) */
+        radial-gradient(circle at 18% 85%, rgba(253, 164, 175, 0.45) 0%, transparent 38%),
+        /* 4. Mancha Verde Claro Pastel (Abajo Derecha) */
+        radial-gradient(circle at 82% 80%, rgba(134, 239, 172, 0.5) 0%, transparent 40%);
+      opacity: 1;
+    }
+
+    /* -------------------------------------------------------------
+       HEADER Y NAVEGACIÓN
+       ------------------------------------------------------------- */
     header {
       position: relative;
       z-index: 10;
-      padding: 40px 24px 30px 24px;
+      padding: 36px 24px 28px 24px;
       text-align: center;
-      background: rgba(13, 17, 26, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: var(--bg-header);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .top-actions-bar {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Interruptor Sol/Luna */
+    .theme-toggle-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.25s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      transform: scale(1.08);
+      border-color: var(--border-hover);
     }
 
     .header-badge {
@@ -96,22 +177,18 @@
       gap: 8px;
       padding: 6px 14px;
       border-radius: 9999px;
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      color: var(--color-electric);
-      font-size: 0.78rem;
+      background: rgba(148, 163, 184, 0.15);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-size: 0.76rem;
       font-weight: 700;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-
-    .header-badge i {
-      font-size: 0.85rem;
+      margin-bottom: 14px;
     }
 
     .brand-title {
-      font-size: 2.5rem;
+      font-size: 2.3rem;
       font-weight: 800;
       letter-spacing: -0.02em;
       color: var(--text-primary);
@@ -119,18 +196,16 @@
       align-items: center;
       justify-content: center;
       gap: 14px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .pokeball-icon {
-      width: 38px;
-      height: 38px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      background: linear-gradient(180deg, #ef4444 45%, #ffffff 55%);
-      border: 3px solid #0f172a;
-      box-shadow: 0 0 16px rgba(239, 68, 68, 0.4);
+      background: linear-gradient(180deg, #dc2626 46%, #ffffff 54%);
+      border: 3px solid #1e293b;
       position: relative;
-      display: inline-block;
       flex-shrink: 0;
     }
 
@@ -141,7 +216,7 @@
       left: 0;
       right: 0;
       height: 3px;
-      background: #0f172a;
+      background: #1e293b;
       transform: translateY(-50%);
     }
 
@@ -150,64 +225,51 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 10px;
-      height: 10px;
+      width: 9px;
+      height: 9px;
       background: #ffffff;
-      border: 3px solid #0f172a;
+      border: 3px solid #1e293b;
       border-radius: 50%;
       transform: translate(-50%, -50%);
     }
 
-    .brand-title-gradient {
-      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
     header p {
       color: var(--text-secondary);
-      font-size: 1.05rem;
-      max-width: 600px;
+      font-size: 1rem;
+      max-width: 620px;
       margin: 0 auto;
       line-height: 1.5;
     }
 
     .controls-wrapper {
-      max-width: 850px;
-      margin: 28px auto 0 auto;
+      max-width: 920px;
+      margin: 26px auto 0 auto;
       display: flex;
       flex-direction: column;
       gap: 16px;
     }
 
-    .search-container {
-      position: relative;
-      width: 100%;
-    }
+    .search-container { position: relative; width: 100%; }
 
     .search-container input {
       width: 100%;
-      padding: 14px 20px 14px 48px;
-      background: rgba(20, 27, 44, 0.85);
+      padding: 13px 20px 13px 46px;
+      background: var(--input-bg);
       border: 1px solid var(--border-subtle);
       border-radius: 14px;
       color: var(--text-primary);
       font-size: 0.95rem;
-      font-family: inherit;
       outline: none;
+      font-family: inherit;
       transition: all 0.25s ease;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     }
 
     .search-container input:focus {
-      border-color: rgba(56, 189, 248, 0.5);
-      background: rgba(24, 33, 54, 0.95);
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.2), inset 0 0 10px rgba(56, 189, 248, 0.05);
+      border-color: var(--border-hover);
     }
 
-    .search-container input::placeholder {
-      color: var(--text-dim);
-    }
+    .search-container input::placeholder { color: var(--text-dim); }
 
     .search-container .search-icon {
       position: absolute;
@@ -215,7 +277,6 @@
       top: 50%;
       transform: translateY(-50%);
       color: var(--text-secondary);
-      font-size: 1rem;
       pointer-events: none;
     }
 
@@ -228,85 +289,54 @@
     }
 
     .filter-btn {
-      padding: 7px 16px;
+      padding: 7px 15px;
       border-radius: 9999px;
-      background: rgba(255, 255, 255, 0.04);
+      background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       color: var(--text-secondary);
       font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .filter-btn:hover {
-      background: rgba(255, 255, 255, 0.09);
       color: var(--text-primary);
-      border-color: rgba(255, 255, 255, 0.2);
+      border-color: var(--border-hover);
     }
 
     .filter-btn.active {
-      background: linear-gradient(135deg, rgba(37, 99, 235, 0.3), rgba(124, 58, 237, 0.3));
-      border-color: rgba(56, 189, 248, 0.5);
-      color: #ffffff;
-      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.25);
+      background: var(--text-primary);
+      color: var(--bg-base);
+      border-color: var(--text-primary);
     }
 
-    /* Botón Juego Aleatorio */
-    .btn-random-game {
+    .btn-random-game, .btn-suggest-game {
       padding: 7px 16px;
       border-radius: 9999px;
-      background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(37, 99, 235, 0.25));
-      border: 1px solid rgba(168, 85, 247, 0.4);
-      color: #c084fc;
       font-size: 0.82rem;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s ease;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
     }
 
-    .btn-random-game:hover {
-      background: linear-gradient(135deg, rgba(124, 58, 237, 0.45), rgba(37, 99, 235, 0.45));
-      border-color: #c084fc;
-      color: #ffffff;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
-    }
-
-    .btn-random-game i {
-      font-size: 0.9rem;
-      transition: transform 0.4s ease;
-    }
-
-    .btn-random-game:hover i {
-      transform: rotate(180deg);
-    }
-
-    .btn-suggest-game {
-      padding: 7px 18px;
-      border-radius: 9999px;
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(220, 38, 38, 0.2));
-      border: 1px solid rgba(245, 158, 11, 0.4);
-      color: var(--color-electric);
-      font-size: 0.82rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.25s ease;
-    }
-
-    .btn-suggest-game:hover {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.35), rgba(220, 38, 38, 0.35));
-      border-color: var(--color-electric);
+    .btn-random-game:hover, .btn-suggest-game:hover {
+      border-color: var(--border-hover);
       transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25);
     }
 
+    /* -------------------------------------------------------------
+       GRID Y TARJETAS TEMÁTICAS
+       ------------------------------------------------------------- */
     main {
       position: relative;
       z-index: 1;
@@ -314,30 +344,34 @@
       max-width: 1240px;
       width: 100%;
       margin: 0 auto;
-      padding: 40px 24px 60px 24px;
+      padding: 36px 24px 60px 24px;
     }
 
     .games-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      gap: 24px;
+      gap: 22px;
     }
 
     .game-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      border-radius: 20px;
-      padding: 24px;
+      border-radius: 18px;
+      padding: 22px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-                  box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-                  border-color 0.3s ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: var(--card-shadow);
       position: relative;
       overflow: hidden;
+    }
+
+    .game-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-hover);
     }
 
     .game-card::before {
@@ -346,121 +380,24 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 3px;
-      background: var(--card-accent-gradient, linear-gradient(90deg, #3b82f6, #8b5cf6));
-      opacity: 0.85;
-      transition: opacity 0.3s ease, height 0.3s ease;
-    }
-
-    .game-card:hover {
-      transform: translateY(-6px);
-      border-color: var(--card-border-hover, rgba(56, 189, 248, 0.35));
-      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), var(--card-shadow, 0 0 25px rgba(37, 99, 235, 0.15));
-    }
-
-    .game-card:hover::before {
       height: 4px;
-      opacity: 1;
+      background: var(--card-accent, #64748b);
     }
 
-    /* Animación de selección aleatoria */
-    .game-card.highlight-pulse {
-      animation: pulseSelection 1.8s ease-out;
-      border-color: #c084fc !important;
-    }
+    /* Configuración por temas según modo */
+    [data-theme="dark"] .game-card[data-theme="fire"] { --card-accent: var(--color-red); }
+    [data-theme="dark"] .game-card[data-theme="grass"] { --card-accent: var(--color-green); }
+    [data-theme="dark"] .game-card[data-theme="psychic"] { --card-accent: var(--color-purple); }
+    [data-theme="dark"] .game-card[data-theme="water"] { --card-accent: var(--color-blue); }
+    [data-theme="dark"] .game-card[data-theme="electric"] { --card-accent: #854d0e; }
+    [data-theme="dark"] .game-card[data-theme="dragon"] { --card-accent: #3730a3; }
 
-    @keyframes pulseSelection {
-      0% {
-        transform: scale(0.96);
-        box-shadow: 0 0 0 0 rgba(192, 132, 252, 0.8);
-      }
-      30% {
-        transform: scale(1.04);
-        box-shadow: 0 0 40px 10px rgba(192, 132, 252, 0.5);
-      }
-      100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(192, 132, 252, 0);
-      }
-    }
-
-    .game-card[data-theme="water"] {
-      --card-accent-gradient: linear-gradient(90deg, var(--color-water), var(--color-water-light));
-      --card-border-hover: rgba(56, 189, 248, 0.4);
-      --card-shadow: 0 0 25px var(--color-water-glow);
-      --icon-bg: rgba(37, 99, 235, 0.15);
-      --icon-color: #38bdf8;
-      --badge-bg: rgba(37, 99, 235, 0.18);
-      --badge-color: #60a5fa;
-      --btn-grad: linear-gradient(135deg, #2563eb, #1d4ed8);
-      --btn-hover-grad: linear-gradient(135deg, #3b82f6, #2563eb);
-      --btn-glow: rgba(37, 99, 235, 0.4);
-    }
-
-    .game-card[data-theme="grass"] {
-      --card-accent-gradient: linear-gradient(90deg, var(--color-grass), var(--color-grass-light));
-      --card-border-hover: rgba(16, 185, 129, 0.4);
-      --card-shadow: 0 0 25px var(--color-grass-glow);
-      --icon-bg: rgba(16, 185, 129, 0.15);
-      --icon-color: #34d399;
-      --badge-bg: rgba(16, 185, 129, 0.18);
-      --badge-color: #34d399;
-      --btn-grad: linear-gradient(135deg, #059669, #047857);
-      --btn-hover-grad: linear-gradient(135deg, #10b981, #059669);
-      --btn-glow: rgba(16, 185, 129, 0.4);
-    }
-
-    .game-card[data-theme="electric"] {
-      --card-accent-gradient: linear-gradient(90deg, #d97706, var(--color-electric));
-      --card-border-hover: rgba(245, 158, 11, 0.4);
-      --card-shadow: 0 0 25px var(--color-electric-glow);
-      --icon-bg: rgba(245, 158, 11, 0.15);
-      --icon-color: #fbbf24;
-      --badge-bg: rgba(245, 158, 11, 0.18);
-      --badge-color: #fbbf24;
-      --btn-grad: linear-gradient(135deg, #d97706, #b45309);
-      --btn-hover-grad: linear-gradient(135deg, #f59e0b, #d97706);
-      --btn-glow: rgba(245, 158, 11, 0.4);
-    }
-
-    .game-card[data-theme="fire"] {
-      --card-accent-gradient: linear-gradient(90deg, var(--color-fire), var(--color-fire-light));
-      --card-border-hover: rgba(249, 115, 22, 0.4);
-      --card-shadow: 0 0 25px var(--color-fire-glow);
-      --icon-bg: rgba(239, 68, 68, 0.15);
-      --icon-color: #f87171;
-      --badge-bg: rgba(239, 68, 68, 0.18);
-      --badge-color: #f87171;
-      --btn-grad: linear-gradient(135deg, #dc2626, #b91c1c);
-      --btn-hover-grad: linear-gradient(135deg, #ef4444, #dc2626);
-      --btn-glow: rgba(220, 38, 38, 0.4);
-    }
-
-    .game-card[data-theme="psychic"] {
-      --card-accent-gradient: linear-gradient(90deg, var(--color-psychic), var(--color-psychic-light));
-      --card-border-hover: rgba(168, 85, 247, 0.4);
-      --card-shadow: 0 0 25px var(--color-psychic-glow);
-      --icon-bg: rgba(124, 58, 237, 0.15);
-      --icon-color: #c084fc;
-      --badge-bg: rgba(124, 58, 237, 0.18);
-      --badge-color: #c084fc;
-      --btn-grad: linear-gradient(135deg, #7c3aed, #6d28d9);
-      --btn-hover-grad: linear-gradient(135deg, #8b5cf6, #7c3aed);
-      --btn-glow: rgba(124, 58, 237, 0.4);
-    }
-
-    .game-card[data-theme="dragon"] {
-      --card-accent-gradient: linear-gradient(90deg, var(--color-dragon), #a855f7);
-      --card-border-hover: rgba(129, 140, 248, 0.4);
-      --card-shadow: 0 0 25px rgba(99, 102, 241, 0.25);
-      --icon-bg: rgba(99, 102, 241, 0.15);
-      --icon-color: #818cf8;
-      --badge-bg: rgba(99, 102, 241, 0.18);
-      --badge-color: #818cf8;
-      --btn-grad: linear-gradient(135deg, #4f46e5, #3730a3);
-      --btn-hover-grad: linear-gradient(135deg, #6366f1, #4f46e5);
-      --btn-glow: rgba(99, 102, 241, 0.4);
-    }
+    [data-theme="light"] .game-card[data-theme="fire"] { --card-accent: var(--color-red); }
+    [data-theme="light"] .game-card[data-theme="grass"] { --card-accent: var(--color-green); }
+    [data-theme="light"] .game-card[data-theme="psychic"] { --card-accent: var(--color-purple); }
+    [data-theme="light"] .game-card[data-theme="water"] { --card-accent: var(--color-blue); }
+    [data-theme="light"] .game-card[data-theme="electric"] { --card-accent: var(--color-yellow); }
+    [data-theme="light"] .game-card[data-theme="dragon"] { --card-accent: #a5b4fc; }
 
     .game-header {
       display: flex;
@@ -470,21 +407,16 @@
     }
 
     .game-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 14px;
-      background: var(--icon-bg, rgba(255, 255, 255, 0.08));
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(148, 163, 184, 0.12);
+      border: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.4rem;
-      color: var(--icon-color, #38bdf8);
-      transition: transform 0.3s ease;
-    }
-
-    .game-card:hover .game-icon {
-      transform: scale(1.08) rotate(-3deg);
+      font-size: 1.3rem;
+      color: var(--text-primary);
     }
 
     .badges-container {
@@ -500,10 +432,10 @@
       font-weight: 700;
       padding: 4px 10px;
       border-radius: 9999px;
-      background: var(--badge-bg, rgba(255, 255, 255, 0.08));
-      color: var(--badge-color, #94a3b8);
-      letter-spacing: 0.03em;
+      background: rgba(148, 163, 184, 0.12);
+      color: var(--text-secondary);
       text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
 
     .badge-mobile {
@@ -514,24 +446,17 @@
       font-weight: 700;
       padding: 3px 8px;
       border-radius: 9999px;
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      color: #34d399;
-      letter-spacing: 0.02em;
+      background: var(--badge-mobile-bg);
+      border: 1px solid var(--badge-mobile-border);
+      color: var(--badge-mobile-text);
       text-transform: uppercase;
-      white-space: nowrap;
+      letter-spacing: 0.02em;
     }
 
-    .badge-mobile i {
-      font-size: 0.72rem;
-    }
-
-    .game-info {
-      margin-bottom: 22px;
-    }
+    .game-info { margin-bottom: 20px; }
 
     .game-title {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 700;
       letter-spacing: -0.01em;
       margin-bottom: 6px;
@@ -542,18 +467,13 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: var(--text-dim);
-      background: rgba(0, 0, 0, 0.25);
-      padding: 4px 10px;
+      background: rgba(148, 163, 184, 0.1);
+      padding: 4px 9px;
       border-radius: 6px;
       margin-bottom: 12px;
       max-width: 100%;
-    }
-
-    .game-url-bar i {
-      font-size: 0.7rem;
-      opacity: 0.7;
     }
 
     .game-url-text {
@@ -563,9 +483,9 @@
     }
 
     .game-desc {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--text-secondary);
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
     .card-actions {
@@ -580,156 +500,61 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 9px;
-      padding: 12px 20px;
-      background: var(--btn-grad, linear-gradient(135deg, #2563eb, #1d4ed8));
-      color: #ffffff;
+      gap: 8px;
+      padding: 11px 18px;
+      background: var(--text-primary);
+      color: var(--bg-base);
       text-decoration: none;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-weight: 700;
       border-radius: 12px;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 14px var(--btn-glow, rgba(37, 99, 235, 0.35));
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-
-    .btn-launch::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -60%;
-      width: 40%;
-      height: 200%;
-      background: linear-gradient(
-        90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.3), 
-        transparent
-      );
-      transform: rotate(25deg);
-      transition: none;
-    }
-
-    .btn-launch:hover::after {
-      left: 130%;
-      transition: all 0.65s ease-in-out;
+      transition: opacity 0.2s ease, transform 0.2s ease;
     }
 
     .btn-launch:hover {
-      background: var(--btn-hover-grad, linear-gradient(135deg, #3b82f6, #2563eb));
-      box-shadow: 0 6px 20px var(--btn-glow, rgba(37, 99, 235, 0.5));
-      transform: translateY(-2px);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .btn-launch i {
-      font-size: 0.85rem;
-      transition: transform 0.25s ease;
-    }
-
-    .btn-launch:hover i {
-      transform: translateX(3px);
+      opacity: 0.9;
+      transform: translateY(-1px);
     }
 
     .btn-copy {
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       color: var(--text-secondary);
       display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       transition: all 0.2s ease;
-      position: relative;
       flex-shrink: 0;
     }
 
     .btn-copy:hover {
-      background: rgba(255, 255, 255, 0.12);
       color: var(--text-primary);
-      border-color: rgba(255, 255, 255, 0.25);
-      transform: translateY(-2px);
+      border-color: var(--border-hover);
     }
 
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: #0f172a;
-      color: #ffffff;
-      padding: 12px 20px;
-      border-radius: 12px;
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(56, 189, 248, 0.2);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      z-index: 100;
-      transform: translateY(100px);
-      opacity: 0;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      pointer-events: none;
+    .game-card.highlight-pulse {
+      animation: pulseSelection 1.8s ease-out;
+      border-color: var(--text-primary) !important;
     }
 
-    .toast.show {
-      transform: translateY(0);
-      opacity: 1;
+    @keyframes pulseSelection {
+      0% { transform: scale(0.97); }
+      40% { transform: scale(1.03); }
+      100% { transform: scale(1); }
     }
 
-    .toast i {
-      color: #38bdf8;
-    }
-
-    .no-results {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--text-secondary);
-      display: none;
-    }
-
-    .no-results i {
-      font-size: 3rem;
-      color: var(--text-dim);
-      margin-bottom: 16px;
-    }
-
-    .no-results h3 {
-      font-size: 1.2rem;
-      color: var(--text-primary);
-      margin-bottom: 6px;
-    }
-
-    footer {
-      position: relative;
-      z-index: 10;
-      text-align: center;
-      padding: 24px;
-      background: rgba(13, 17, 26, 0.9);
-      border-top: 1px solid var(--border-subtle);
-      color: var(--text-dim);
-      font-size: 0.85rem;
-    }
-
-    footer span {
-      color: var(--color-electric);
-    }
-
-    /* Modal Formulario */
+    /* Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(3, 7, 18, 0.82);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -737,35 +562,29 @@
       padding: 20px;
     }
 
-    .modal-backdrop.open {
-      display: flex;
-    }
+    .modal-backdrop.open { display: flex; }
 
     .modal-container {
-      background: #0d121d;
+      background: var(--bg-base);
       border: 1px solid var(--border-hover);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75), 0 0 30px rgba(56, 189, 248, 0.15);
-      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border-radius: 18px;
       width: 100%;
-      max-width: 480px;
-      padding: 28px;
-      position: relative;
+      max-width: 460px;
+      padding: 26px;
     }
 
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .modal-header h3 {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 10px;
     }
 
     .modal-close {
@@ -774,116 +593,143 @@
       color: var(--text-dim);
       font-size: 1.2rem;
       cursor: pointer;
-      transition: color 0.2s ease;
-    }
-
-    .modal-close:hover {
-      color: var(--text-primary);
     }
 
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
 
     .form-group label {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
       color: var(--text-secondary);
     }
 
     .form-group input, .form-group select {
-      background: rgba(20, 27, 44, 0.85);
+      background: var(--input-bg);
       border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 12px 14px;
+      border-radius: 10px;
+      padding: 11px 13px;
       color: var(--text-primary);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       outline: none;
       font-family: inherit;
-      transition: border-color 0.2s ease;
-    }
-
-    .form-group input:focus, .form-group select:focus {
-      border-color: rgba(56, 189, 248, 0.6);
     }
 
     .modal-actions {
       display: flex;
       justify-content: flex-end;
-      gap: 12px;
-      margin-top: 24px;
+      gap: 10px;
+      margin-top: 22px;
     }
 
     .btn-cancel {
-      padding: 10px 18px;
+      padding: 9px 16px;
       border-radius: 10px;
       background: transparent;
       border: 1px solid var(--border-subtle);
       color: var(--text-secondary);
       font-weight: 600;
       cursor: pointer;
-      font-family: inherit;
     }
 
     .btn-submit {
-      padding: 10px 22px;
+      padding: 9px 20px;
       border-radius: 10px;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #fff;
+      background: var(--text-primary);
+      border: none;
+      color: var(--bg-base);
       font-weight: 700;
       cursor: pointer;
-      font-family: inherit;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
     }
 
-    .btn-submit:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    .loading-state, .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-secondary);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border-hover);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      z-index: 100;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    footer {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 22px;
+      background: var(--bg-header);
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-dim);
+      font-size: 0.85rem;
     }
 
     @media (max-width: 640px) {
-      .brand-title {
-        font-size: 1.8rem;
-      }
-      header {
-        padding: 30px 16px 24px 16px;
-      }
-      main {
-        padding: 24px 16px;
-      }
-      .games-grid {
-        grid-template-columns: 1fr;
-      }
+      .brand-title { font-size: 1.7rem; }
+      .top-actions-bar { position: static; justify-content: center; margin-bottom: 16px; }
+      header { padding: 24px 16px; }
+      main { padding: 24px 16px; }
+      .games-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Fondo estético dinámico -->
+  <div class="bg-canvas"></div>
+
   <header>
+    <div class="top-actions-bar">
+      <!-- Botón Modo Claro / Oscuro -->
+      <button class="theme-toggle-btn" id="themeToggleBtn" title="Cambiar tema">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+    </div>
+
     <div class="header-badge">
-      <i class="fa-solid fa-bolt"></i> Cliente Unificado
+      <i class="fa-solid fa-layer-group"></i> Catálogo Curado
     </div>
     <h1 class="brand-title">
       <span class="pokeball-icon"></span>
-      <span class="brand-title-gradient">Pokemon Web Client</span>
+      <span>Pokemon Web Client</span>
     </h1>
-    <p>Acceso directo y optimizado a tus juegos y plataformas de Pokémon favoritas en la web</p>
+    <p>Acceso directo y fluido a juegos web comunitarios de Pokémon</p>
     
     <div class="controls-wrapper">
       <div class="search-container">
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input type="text" id="searchInput" placeholder="Buscar juego por nombre, categoría o descripción...">
+        <input type="text" id="searchInput" placeholder="Buscar juego por nombre o categoría...">
       </div>
 
       <div class="filter-pills" id="filterPills">
         <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="mobile">
+          <i class="fa-solid fa-mobile-screen"></i> Móvil
+        </button>
         <button class="filter-btn" data-filter="Combate">Combate</button>
         <button class="filter-btn" data-filter="Defensa">Defensa</button>
         <button class="filter-btn" data-filter="Estrategia">Estrategia</button>
@@ -892,13 +738,12 @@
         <button class="filter-btn" data-filter="Supervivencia">Supervivencia</button>
         <button class="filter-btn" data-filter="Roguelike">Roguelike</button>
         
-        <!-- Botón Juego Aleatorio -->
         <button class="btn-random-game" id="btnRandomGame" title="Elegir y lanzar un juego al azar">
-          <i class="fa-solid fa-dice"></i> Juego Aleatorio
+          <i class="fa-solid fa-dice"></i> Aleatorio
         </button>
 
         <button class="btn-suggest-game" id="btnOpenModal">
-          <i class="fa-solid fa-circle-plus"></i> Proponer Juego
+          <i class="fa-solid fa-plus"></i> Proponer
         </button>
       </div>
     </div>
@@ -906,496 +751,28 @@
 
   <main>
     <div class="games-grid" id="gamesGrid">
-
-      <!-- 1. Poke 2D Arena -->
-      <div class="game-card" data-name="poke 2d arena" data-category="Combate" data-theme="water">
-        <div>
-          <div class="game-header">
-            <div class="game-icon"><i class="fa-solid fa-chess-board"></i></div>
-            <div class="badges-container">
-              <span class="game-category-tag">Combate</span>
-            </div>
-          </div>
-          <div class="game-info">
-            <h2 class="game-title">Poke 2D Arena</h2>
-            <div class="game-url-bar">
-              <i class="fa-solid fa-globe"></i>
-              <span class="game-url-text">https://poke2darena.com/</span>
-            </div>
-            <p class="game-desc">Arena de combate 2D multijugador basada en Pokémon. Enfréntate en tiempo real contra entrenadores.</p>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a href="https://poke2darena.com/" target="_blank" class="btn-launch">
-            <span>Jugar Ahora</span>
-            <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-          <button class="btn-copy" data-url="https://poke2darena.com/" title="Copiar Enlace">
-            <i class="fa-regular fa-copy"></i>
-          </button>
-        </div>
+      <div class="loading-state" id="loadingState">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.8rem; margin-bottom: 12px;"></i>
+        <p>Cargando biblioteca de juegos...</p>
       </div>
 
-      <!-- 2. Poke Defense -->
-      <div class="game-card" data-name="poke defense" data-category="Defensa" data-theme="grass">
-        <div>
-          <div class="game-header">
-            <div class="game-icon"><i class="fa-solid fa-shield-halved"></i></div>
-            <div class="badges-container">
-              <span class="game-category-tag">Defensa</span>
-            </div>
-          </div>
-          <div class="game-info">
-            <h2 class="game-title">Poke Defense</h2>
-            <div class="game-url-bar">
-              <i class="fa-solid fa-globe"></i>
-              <span class="game-url-text">https://pokedefense.com/</span>
-            </div>
-            <p class="game-desc">Juego de defensa de torres con temática de Pokémon. Posiciona a tus criaturas estratégicamente.</p>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a href="https://pokedefense.com/" target="_blank" class="btn-launch">
-            <span>Jugar Ahora</span>
-            <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-          <button class="btn-copy" data-url="https://pokedefense.com/" title="Copiar Enlace">
-            <i class="fa-regular fa-copy"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- 3. Poke Jam -->
-      <div class="game-card" data-name="poke jam" data-category="Deportes" data-theme="electric" data-mobile="si">
-        <div>
-          <div class="game-header">
-            <div class="game-icon"><i class="fa-solid fa-basketball"></i></div>
-            <div class="badges-container">
-              <span class="badge-mobile"><i class="fa-solid fa-mobile-screen"></i> Móvil</span>
-              <span class="game-category-tag">Deportes</span>
-            </div>
-          </div>
-          <div class="game-info">
-            <h2 class="game-title">Poke Jam</h2>
-            <div class="game-url-bar">
-              <i class="fa-solid fa-globe"></i>
-              <span class="game-url-text">https://pokejam.xyz/</span>
-            </div>
-            <p class="game-desc">Minijuegos y desafíos deportivos inspirados en el universo Pokémon para partidas dinámicas.</p>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a href="https://pokejam.xyz/" target="_blank" class="btn-launch">
-            <span>Jugar Ahora</span>
-            <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-          <button class="btn-copy" data-url="https://pokejam.xyz/" title="Copiar Enlace">
-            <i class="fa-regular fa-copy"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- 4. Poke Versus -->
-      <div class="game-card" data-name="poke versus" data-category="Combate" data-theme="fire">
-        <div>
-          <div class="game-header">
-            <div class="game-icon"><i class="fa-solid fa-bolt"></i></div>
-            <div class="badges-container">
-              <span class="game-category-tag">Combate</span>
-            </div>
-          </div>
-          <div class="game-info">
-            <h2 class="game-title">Poke Versus</h2>
-            <div class="game-url-bar">
-              <i class="fa-solid fa-globe"></i>
-              <span class="game-url-text">https://pokeversus.com/</span>
-            </div>
-            <p class="game-desc">Batallas dinámicas y de acción entre entrenadores. Demuestra tu dominio en la arena.</p>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a href="https://pokeversus.com/" target="_blank" class="btn-launch">
-            <span>Jugar Ahora</span>
-            <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-          <button class="btn-copy" data-url="https://pokeversus.com/" title="Copiar Enlace">
-            <i class="fa-regular fa-copy"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- 5. Kanto Tactics -->
-      <div class="game-card" data-name="kanto tactics einoow" data-category="Estrategia" data-theme="psychic" data-mobile="si">
-        <div>
-          <div class="game-header">
-            <div class="game-icon"><i class="fa-solid fa-map"></i></div>
-            <div class="badges-container">
-              <span class="badge-mobile"><i class="fa-solid fa-mobile-screen"></i> Móvil</span>
-              <span class="game-category-tag">Estrategia</span>
-            </div>
-          </div>
-          <div class="game-info">
-            <h2 class="game-title">Kanto Tactics</h2>
-            <div class="game-url-bar">
-              <i class="fa-solid fa-globe"></i>
-              <span class="game-url-text">https://einoow.com/kanto-tactics</span>
-            </div>
-            <p class="game-desc">Estrategia táctica por turnos ambientada en la emblemática región de Kanto.</p>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a href="https://einoow.com/kanto-tactics" target="_blank" class="btn-launch">
-            <span>Jugar Ahora</span>
-            <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-          <button class="btn-copy" data-url="https://einoow.com/kanto-tactics" title="Copiar Enlace">
-            <i class="fa-regular fa-copy"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- 6. Poke Isaac -->
-      <div class="game-card" data-name="poke isaac" data-category="Roguelike" data-theme="dragon" data-mobile="si">
-        <div>
-          <div class="game-header">
-            <div class="game-icon"><i class="fa-solid fa-skull"></i></div>
-            <div class="badges-container">
-              <span class="badge-mobile"><i class="fa-solid fa-mobile-screen"></i> Móvil</span>
-              <span class="game-category-tag">Roguelike</span>
-            </div>
-          </div>
-          <div class="game-info">
-            <h2 class="game-title">Poke Isaac</h2>
-            <div class="game-url-bar">
-              <i class="fa-solid fa-globe"></i>
-              <span class="game-url-text">https://pokeisaac.com/</span>
-            </div>
-            <p class="game-desc">Roguelike dungeon crawler inspirado en The Binding of Isaac con estética y mecánicas Pokémon.</p>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a href="https://pokeisaac.com/" target="_blank" class="btn-launch">
-            <span>Jugar Ahora</span>
-            <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-          <button class="btn-copy" data-url="https://pokeisaac.com/" title="Copiar Enlace">
-            <i class="fa-regular fa-copy"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- 7. Poke Survivor -->
-      <div class="game-card" data-name="poke survivor" data-category="Supervivencia" data-theme="fire">
-        <div>
-          <div class="game-header">
-            <div class="game-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
-            <div class="badges-container">
-              <span class="game-category-tag">Supervivencia</span>
-            </div>
-          </div>
-          <div class="game-info">
-            <h2 class="game-title">Poke Survivor</h2>
-            <div class="game-url-bar">
-              <i class="fa-solid fa-globe"></i>
-              <span class="game-url-text">https://pokesurvivor.xyz/</span>
-            </div>
-            <p class="game-desc">Juego de supervivencia contra hordas masivas al estilo Vampire Survivors con ataques Pokémon.</p>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a href="https://pokesurvivor.xyz/" target="_blank" class="btn-launch">
-            <span>Jugar Ahora</span>
-            <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-          <button class="btn-copy" data-url="https://pokesurvivor.xyz/" title="Copiar Enlace">
-            <i class="fa-regular fa-copy"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- 8. Poke Bonk -->
-      <div class="game-card" data-name="poke bonk" data-category="Supervivencia" data-theme="electric">
-        <div>
-          <div class="game-header">
-            <div class="game-icon"><i class="fa-solid fa-shield"></i></div>
-            <div class="badges-container">
-              <span class="game-category-tag">Supervivencia</span>
-            </div>
-          </div>
-          <div class="game-info">
-            <h2 class="game-title">Poke Bonk</h2>
-            <div class="game-url-bar">
-              <i class="fa-solid fa-globe"></i>
-              <span class="game-url-text">https://pokebonk.com/</span>
-            </div>
-            <p class="game-desc">Divertidísimo juego de supervivencia y choques caóticos entre Pokémon.</p>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a href="https://pokebonk.com/" target="_blank" class="btn-launch">
-            <span>Jugar Ahora</span>
-            <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-          <button class="btn-copy" data-url="https://pokebonk.com/" title="Copiar Enlace">
-            <i class="fa-regular fa-copy"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- 9. Poke Tactics (ES) -->
-      <div class="game-card" data-name="poke tactics" data-category="Estrategia" data-theme="grass">
-        <div>
-          <div class="game-header">
-            <div class="game-icon"><i class="fa-solid fa-chess"></i></div>
-            <div class="badges-container">
-              <span class="game-category-tag">Estrategia</span>
-            </div>
-          </div>
-          <div class="game-info">
-            <h2 class="game-title">Poke Tactics</h2>
-            <div class="game-url-bar">
-              <i class="fa-solid fa-globe"></i>
-              <span class="game-url-text">https://poketactics.xyz/es</span>
-            </div>
-            <p class="game-desc">Juego de tácticas y combate estratégico Pokémon en español.</p>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a href="https://poketactics.xyz/es" target="_blank" class="btn-launch">
-            <span>Jugar Ahora</span>
-            <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-          <button class="btn-copy" data-url="https://poketactics.xyz/es" title="Copiar Enlace">
-            <i class="fa-regular fa-copy"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- 10. Daily Red Game -->
-      <div class="game-card" data-name="daily red game" data-category="Puzzle" data-theme="water" data-mobile="si">
-        <div>
-          <div class="game-header">
-            <div class="game-icon"><i class="fa-solid fa-calendar-day"></i></div>
-            <div class="badges-container">
-              <span class="badge-mobile"><i class="fa-solid fa-mobile-screen"></i> Móvil</span>
-              <span class="game-category-tag">Puzzle</span>
-            </div>
-          </div>
-          <div class="game-info">
-            <h2 class="game-title">Daily Red Game</h2>
-            <div class="game-url-bar">
-              <i class="fa-solid fa-globe"></i>
-              <span class="game-url-text">https://dailyredgame.online/</span>
-            </div>
-            <p class="game-desc">Desafío diario de puzzle basado en Pokémon Rojo clásico.</p>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a href="https://dailyredgame.online/" target="_blank" class="btn-launch">
-            <span>Jugar Ahora</span>
-            <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-          <button class="btn-copy" data-url="https://dailyredgame.online/" title="Copiar Enlace">
-            <i class="fa-regular fa-copy"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- 11. Poke Merge -->
-      <div class="game-card" data-name="poke merge" data-category="Roguelike" data-theme="electric" data-mobile="si">
-        <div>
-          <div class="game-header">
-            <div class="game-icon"><i class="fa-solid fa-shapes"></i></div>
-            <div class="badges-container">
-              <span class="badge-mobile"><i class="fa-solid fa-mobile-screen"></i> Móvil</span>
-              <span class="game-category-tag">Roguelike</span>
-            </div>
-          </div>
-          <div class="game-info">
-            <h2 class="game-title">Poke Merge</h2>
-            <div class="game-url-bar">
-              <i class="fa-solid fa-globe"></i>
-              <span class="game-url-text">https://poke-merge.xyz/</span>
-            </div>
-            <p class="game-desc">Juego roguelike combinando Pokémon para descubrir evoluciones y progresar.</p>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a href="https://poke-merge.xyz/" target="_blank" class="btn-launch">
-            <span>Jugar Ahora</span>
-            <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-          <button class="btn-copy" data-url="https://poke-merge.xyz/" title="Copiar Enlace">
-            <i class="fa-regular fa-copy"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- 12. Pokemon Royale -->
-      <div class="game-card" data-name="pokemon royale" data-category="Supervivencia" data-theme="fire">
-        <div>
-          <div class="game-header">
-            <div class="game-icon"><i class="fa-solid fa-crown"></i></div>
-            <div class="badges-container">
-              <span class="game-category-tag">Supervivencia</span>
-            </div>
-          </div>
-          <div class="game-info">
-            <h2 class="game-title">Pokemon Royale</h2>
-            <div class="game-url-bar">
-              <i class="fa-solid fa-globe"></i>
-              <span class="game-url-text">https://pokemonroyale.com/</span>
-            </div>
-            <p class="game-desc">Batalla real y supervivencia multijugador con temática Pokémon.</p>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a href="https://pokemonroyale.com/" target="_blank" class="btn-launch">
-            <span>Jugar Ahora</span>
-            <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-          <button class="btn-copy" data-url="https://pokemonroyale.com/" title="Copiar Enlace">
-            <i class="fa-regular fa-copy"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- 13. Pokemon Redstone -->
-      <div class="game-card" data-name="pokemon redstone" data-category="Estrategia" data-theme="psychic">
-        <div>
-          <div class="game-header">
-            <div class="game-icon"><i class="fa-solid fa-cube"></i></div>
-            <div class="badges-container">
-              <span class="game-category-tag">Estrategia</span>
-            </div>
-          </div>
-          <div class="game-info">
-            <h2 class="game-title">Pokemon Redstone</h2>
-            <div class="game-url-bar">
-              <i class="fa-solid fa-globe"></i>
-              <span class="game-url-text">https://pokemon-redstone.pages.dev/</span>
-            </div>
-            <p class="game-desc">Mundo creativo y de estrategia inspirado en Redstone y Pokémon.</p>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a href="https://pokemon-redstone.pages.dev/" target="_blank" class="btn-launch">
-            <span>Jugar Ahora</span>
-            <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-          <button class="btn-copy" data-url="https://pokemon-redstone.pages.dev/" title="Copiar Enlace">
-            <i class="fa-regular fa-copy"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- 14. All 22 Pokémon -->
-      <div class="game-card" data-name="all22pokemon football" data-category="Deportes" data-theme="water">
-        <div>
-          <div class="game-header">
-            <div class="game-icon"><i class="fa-solid fa-football"></i></div>
-            <div class="badges-container">
-              <span class="game-category-tag">Deportes</span>
-            </div>
-          </div>
-          <div class="game-info">
-            <h2 class="game-title">All 22 Pokémon</h2>
-            <div class="game-url-bar">
-              <i class="fa-solid fa-globe"></i>
-              <span class="game-url-text">https://all22pokemon.com/</span>
-            </div>
-            <p class="game-desc">Juego de fútbol americano estratégico con personajes Pokémon.</p>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a href="https://all22pokemon.com/" target="_blank" class="btn-launch">
-            <span>Jugar Ahora</span>
-            <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-          <button class="btn-copy" data-url="https://all22pokemon.com/" title="Copiar Enlace">
-            <i class="fa-regular fa-copy"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- 15. Pokedoku -->
-      <div class="game-card" data-name="pokedoku" data-category="Puzzle" data-theme="grass" data-mobile="si">
-        <div>
-          <div class="game-header">
-            <div class="game-icon"><i class="fa-solid fa-table-cells"></i></div>
-            <div class="badges-container">
-              <span class="badge-mobile"><i class="fa-solid fa-mobile-screen"></i> Móvil</span>
-              <span class="game-category-tag">Puzzle</span>
-            </div>
-          </div>
-          <div class="game-info">
-            <h2 class="game-title">Pokedoku</h2>
-            <div class="game-url-bar">
-              <i class="fa-solid fa-globe"></i>
-              <span class="game-url-text">https://pokedoku.com/</span>
-            </div>
-            <p class="game-desc">Sudoku diario de Pokémon basado en tipos, regiones y características.</p>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a href="https://pokedoku.com/" target="_blank" class="btn-launch">
-            <span>Jugar Ahora</span>
-            <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-          <button class="btn-copy" data-url="https://pokedoku.com/" title="Copiar Enlace">
-            <i class="fa-regular fa-copy"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- 16. Pokedle -->
-      <div class="game-card" data-name="pokedle" data-category="Puzzle" data-theme="dragon" data-mobile="si">
-        <div>
-          <div class="game-header">
-            <div class="game-icon"><i class="fa-solid fa-font"></i></div>
-            <div class="badges-container">
-              <span class="badge-mobile"><i class="fa-solid fa-mobile-screen"></i> Móvil</span>
-              <span class="game-category-tag">Puzzle</span>
-            </div>
-          </div>
-          <div class="game-info">
-            <h2 class="game-title">Pokedle</h2>
-            <div class="game-url-bar">
-              <i class="fa-solid fa-globe"></i>
-              <span class="game-url-text">https://pokedle.net/</span>
-            </div>
-            <p class="game-desc">Wordle diario de puzzle adivinando el Pokémon oculto y sus pistas.</p>
-          </div>
-        </div>
-        <div class="card-actions">
-          <a href="https://pokedle.net/" target="_blank" class="btn-launch">
-            <span>Jugar Ahora</span>
-            <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-          <button class="btn-copy" data-url="https://pokedle.net/" title="Copiar Enlace">
-            <i class="fa-regular fa-copy"></i>
-          </button>
-        </div>
-      </div>
-
-      <div class="no-results" id="noResults">
-        <i class="fa-solid fa-ghost"></i>
+      <div class="no-results" id="noResults" style="display: none;">
+        <i class="fa-solid fa-ghost" style="font-size: 2.5rem; margin-bottom: 12px;"></i>
         <h3>No se encontraron juegos</h3>
-        <p>Intenta con otro término de búsqueda o categoría.</p>
+        <p>Prueba con otro término de búsqueda o filtro.</p>
       </div>
-
     </div>
   </main>
 
   <footer>
-    <p>Pokemon Web Client &bull; Cliente creado para acceso rápido <span>⚡</span></p>
+    <p>Pokemon Web Client &bull; Plataforma comunitaria</p>
   </footer>
 
   <!-- Modal para proponer / agregar juego -->
   <div class="modal-backdrop" id="modalBackdrop">
     <div class="modal-container">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-gamepad" style="color: var(--color-electric);"></i> Añadir Nuevo Juego</h3>
+        <h3>Añadir Nuevo Juego</h3>
         <button class="modal-close" id="btnCloseModal"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <form id="formAddGame">
@@ -1421,9 +798,7 @@
         </div>
         <div class="modal-actions">
           <button type="button" class="btn-cancel" id="btnCancelModal">Cancelar</button>
-          <button type="submit" class="btn-submit" id="btnSubmitGame">
-            <i class="fa-solid fa-cloud-arrow-up"></i> Publicar
-          </button>
+          <button type="submit" class="btn-submit" id="btnSubmitGame">Publicar</button>
         </div>
       </form>
     </div>
@@ -1435,19 +810,41 @@
   </div>
 
   <script>
-    // -------------------------------------------------------------
-    // CONFIGURACIÓN DE BASE DE DATOS (Google Apps Script)
-    // -------------------------------------------------------------
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw45co-UzeQ9ziGagge7g5GlIOG8gi1KecClLKdoy-jAaIZNNiomj4N1wUDm2OfUEVFnQ/exec";
 
+    // -------------------------------------------------------------
+    // GESTIÓN DE TEMA: MODO CLARO Y OSCURO
+    // -------------------------------------------------------------
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const htmlElement = document.documentElement;
+
+    function applyTheme(theme) {
+      htmlElement.setAttribute('data-theme', theme);
+      localStorage.setItem('pokemon_client_theme', theme);
+      themeToggleBtn.innerHTML = theme === 'dark' 
+        ? '<i class="fa-solid fa-moon"></i>' 
+        : '<i class="fa-solid fa-sun" style="color: #ca8a04;"></i>';
+    }
+
+    const savedTheme = localStorage.getItem('pokemon_client_theme') || 'dark';
+    applyTheme(savedTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+      const current = htmlElement.getAttribute('data-theme');
+      applyTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    // -------------------------------------------------------------
+    // FILTROS, BÚSQUEDA Y ELEMENTOS DOM
+    // -------------------------------------------------------------
     const searchInput = document.getElementById('searchInput');
     const gamesGrid = document.getElementById('gamesGrid');
+    const loadingState = document.getElementById('loadingState');
     const filterBtns = document.querySelectorAll('.filter-btn');
     const noResults = document.getElementById('noResults');
     const toast = document.getElementById('toast');
     const toastMsg = document.getElementById('toastMsg');
 
-    // Botones especiales
     const btnRandomGame = document.getElementById('btnRandomGame');
     const btnOpenModal = document.getElementById('btnOpenModal');
     const btnCloseModal = document.getElementById('btnCloseModal');
@@ -1462,7 +859,7 @@
       'Combate': { theme: 'fire', icon: 'fa-bolt' },
       'Defensa': { theme: 'grass', icon: 'fa-shield-halved' },
       'Estrategia': { theme: 'psychic', icon: 'fa-chess' },
-      'Puzzle': { theme: 'water', icon: 'fa-puzzle-piece' },
+      'Puzzle': { theme: 'water', icon: 'fa-table-cells' },
       'Deportes': { theme: 'electric', icon: 'fa-basketball' },
       'Supervivencia': { theme: 'fire', icon: 'fa-users-viewfinder' },
       'Roguelike': { theme: 'dragon', icon: 'fa-skull' }
@@ -1476,13 +873,19 @@
       allCards.forEach(card => {
         const name = card.getAttribute('data-name') || '';
         const category = card.getAttribute('data-category') || '';
-        const titleEl = card.querySelector('.game-title');
-        const descEl = card.querySelector('.game-desc');
-        const title = titleEl ? titleEl.textContent.toLowerCase() : '';
-        const desc = descEl ? descEl.textContent.toLowerCase() : '';
+        const isMobile = card.getAttribute('data-mobile') === 'si';
+        const title = (card.querySelector('.game-title')?.textContent || '').toLowerCase();
 
-        const matchesSearch = name.includes(term) || title.includes(term) || desc.includes(term);
-        const matchesCategory = (activeCategory === 'all') || (category === activeCategory);
+        const matchesSearch = name.includes(term) || title.includes(term);
+        
+        let matchesCategory = false;
+        if (activeCategory === 'all') {
+          matchesCategory = true;
+        } else if (activeCategory === 'mobile') {
+          matchesCategory = isMobile;
+        } else {
+          matchesCategory = (category === activeCategory);
+        }
 
         if (matchesSearch && matchesCategory) {
           card.style.display = 'flex';
@@ -1492,11 +895,7 @@
         }
       });
 
-      if (visibleCount === 0) {
-        noResults.style.display = 'block';
-      } else {
-        noResults.style.display = 'none';
-      }
+      noResults.style.display = (visibleCount === 0) ? 'block' : 'none';
     }
 
     searchInput.addEventListener('input', filterGames);
@@ -1525,23 +924,19 @@
         };
       });
     }
-    attachCopyEvents();
 
     let toastTimeout;
     function showToast(message) {
       toastMsg.textContent = message;
       toast.classList.add('show');
       clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(() => {
-        toast.classList.remove('show');
-      }, 2500);
+      toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 2500);
     }
 
     // -------------------------------------------------------------
-    // LÓGICA DEL BOTÓN: JUEGO ALEATORIO
+    // BOTÓN ALEATORIO
     // -------------------------------------------------------------
     btnRandomGame.addEventListener('click', () => {
-      // Elige entre los juegos visibles actualmente según la búsqueda o filtro
       const allCards = Array.from(gamesGrid.getElementsByClassName('game-card'));
       const visibleCards = allCards.filter(card => card.style.display !== 'none');
       const targetPool = visibleCards.length > 0 ? visibleCards : allCards;
@@ -1552,20 +947,16 @@
       const title = randomCard.querySelector('.game-title').textContent;
       const launchLink = randomCard.querySelector('.btn-launch').href;
 
-      // Desplaza suavemente hacia la tarjeta y emite un pulso visual
       randomCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
       randomCard.classList.remove('highlight-pulse');
-      void randomCard.offsetWidth; // fuerza reflow para reiniciar animación
+      void randomCard.offsetWidth;
       randomCard.classList.add('highlight-pulse');
 
-      showToast(`¡Destino elegido: ${title}! 🎲 Abriendo juego...`);
-
-      setTimeout(() => {
-        window.open(launchLink, '_blank');
-      }, 450);
+      showToast(`¡Destino: ${title}! 🎲 Abriendo juego...`);
+      setTimeout(() => { window.open(launchLink, '_blank'); }, 450);
     });
 
-    // Modal Control
+    // Control del Modal
     btnOpenModal.addEventListener('click', () => modalBackdrop.classList.add('open'));
     [btnCloseModal, btnCancelModal].forEach(btn => {
       btn.addEventListener('click', () => modalBackdrop.classList.remove('open'));
@@ -1575,17 +966,14 @@
     });
 
     // -------------------------------------------------------------
-    // LEER JUEGOS DESDE GOOGLE SHEETS
+    // CARGAR DESDE GOOGLE SHEETS
     // -------------------------------------------------------------
     async function loadGamesFromSheet() {
-      if (!SCRIPT_URL) return;
-
       try {
         const res = await fetch(SCRIPT_URL);
         const games = await res.json();
 
-        const existingUrls = Array.from(document.querySelectorAll('.game-card .btn-launch'))
-          .map(a => a.href.replace(/\/$/, ""));
+        if (loadingState) loadingState.remove();
 
         games.forEach(rawGame => {
           const nombre = rawGame.nombre || rawGame.Nombre || "";
@@ -1594,9 +982,6 @@
           const esMovil = (rawGame.movil || rawGame.Movil || "").toLowerCase().trim() === "si";
 
           if (!nombre || !url) return;
-
-          const cleanUrl = String(url).trim().replace(/\/$/, "");
-          if (existingUrls.includes(cleanUrl)) return;
 
           const meta = categoryThemeMap[cat] || { theme: 'dragon', icon: 'fa-gamepad' };
           const mobileBadgeHtml = esMovil 
@@ -1625,7 +1010,7 @@
                   <i class="fa-solid fa-globe"></i>
                   <span class="game-url-text">${url}</span>
                 </div>
-                <p class="game-desc">Añadido por la comunidad de entrenadores.</p>
+                <p class="game-desc">Acceso web optimizado para comunidad Pokémon.</p>
               </div>
             </div>
             <div class="card-actions">
@@ -1645,13 +1030,12 @@
         attachCopyEvents();
         filterGames();
       } catch (err) {
-        console.warn("No se pudieron cargar juegos de la hoja:", err);
+        if (loadingState) {
+          loadingState.innerHTML = '<i class="fa-solid fa-circle-exclamation" style="font-size: 1.8rem; margin-bottom: 12px; color: #ef4444;"></i><p>Error al conectar con la base de datos.</p>';
+        }
       }
     }
 
-    // -------------------------------------------------------------
-    // ENVIAR JUEGO A GOOGLE SHEETS
-    // -------------------------------------------------------------
     formAddGame.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -1660,7 +1044,7 @@
       const categoria = document.getElementById('gameCategory').value;
 
       btnSubmitGame.disabled = true;
-      btnSubmitGame.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+      btnSubmitGame.textContent = 'Guardando...';
 
       try {
         const res = await fetch(SCRIPT_URL, {
@@ -1672,19 +1056,20 @@
         const data = await res.json();
 
         if (data.status === 'success') {
-          showToast('¡Juego agregado con éxito a la biblioteca!');
+          showToast('¡Juego registrado en la hoja!');
           formAddGame.reset();
           modalBackdrop.classList.remove('open');
+          
+          Array.from(gamesGrid.getElementsByClassName('game-card')).forEach(c => c.remove());
           await loadGamesFromSheet();
         } else {
           alert('Error: ' + data.message);
         }
       } catch (err) {
-        console.error("Error al enviar juego:", err);
         alert('Hubo un problema al conectar con el servidor.');
       } finally {
         btnSubmitGame.disabled = false;
-        btnSubmitGame.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Publicar';
+        btnSubmitGame.textContent = 'Publicar';
       }
     });
 
