@@ -173,7 +173,7 @@
     }
 
     .controls-wrapper {
-      max-width: 800px;
+      max-width: 850px;
       margin: 28px auto 0 auto;
       display: flex;
       flex-direction: column;
@@ -252,6 +252,39 @@
       box-shadow: 0 2px 10px rgba(37, 99, 235, 0.25);
     }
 
+    /* Botón Juego Aleatorio */
+    .btn-random-game {
+      padding: 7px 16px;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(37, 99, 235, 0.25));
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      color: #c084fc;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-random-game:hover {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.45), rgba(37, 99, 235, 0.45));
+      border-color: #c084fc;
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+    }
+
+    .btn-random-game i {
+      font-size: 0.9rem;
+      transition: transform 0.4s ease;
+    }
+
+    .btn-random-game:hover i {
+      transform: rotate(180deg);
+    }
+
     .btn-suggest-game {
       padding: 7px 18px;
       border-radius: 9999px;
@@ -328,6 +361,27 @@
     .game-card:hover::before {
       height: 4px;
       opacity: 1;
+    }
+
+    /* Animación de selección aleatoria */
+    .game-card.highlight-pulse {
+      animation: pulseSelection 1.8s ease-out;
+      border-color: #c084fc !important;
+    }
+
+    @keyframes pulseSelection {
+      0% {
+        transform: scale(0.96);
+        box-shadow: 0 0 0 0 rgba(192, 132, 252, 0.8);
+      }
+      30% {
+        transform: scale(1.04);
+        box-shadow: 0 0 40px 10px rgba(192, 132, 252, 0.5);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(192, 132, 252, 0);
+      }
     }
 
     .game-card[data-theme="water"] {
@@ -433,6 +487,14 @@
       transform: scale(1.08) rotate(-3deg);
     }
 
+    .badges-container {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
     .game-category-tag {
       font-size: 0.72rem;
       font-weight: 700;
@@ -442,6 +504,26 @@
       color: var(--badge-color, #94a3b8);
       letter-spacing: 0.03em;
       text-transform: uppercase;
+    }
+
+    .badge-mobile {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34d399;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .badge-mobile i {
+      font-size: 0.72rem;
     }
 
     .game-info {
@@ -809,6 +891,12 @@
         <button class="filter-btn" data-filter="Deportes">Deportes</button>
         <button class="filter-btn" data-filter="Supervivencia">Supervivencia</button>
         <button class="filter-btn" data-filter="Roguelike">Roguelike</button>
+        
+        <!-- Botón Juego Aleatorio -->
+        <button class="btn-random-game" id="btnRandomGame" title="Elegir y lanzar un juego al azar">
+          <i class="fa-solid fa-dice"></i> Juego Aleatorio
+        </button>
+
         <button class="btn-suggest-game" id="btnOpenModal">
           <i class="fa-solid fa-circle-plus"></i> Proponer Juego
         </button>
@@ -824,7 +912,9 @@
         <div>
           <div class="game-header">
             <div class="game-icon"><i class="fa-solid fa-chess-board"></i></div>
-            <span class="game-category-tag">Combate</span>
+            <div class="badges-container">
+              <span class="game-category-tag">Combate</span>
+            </div>
           </div>
           <div class="game-info">
             <h2 class="game-title">Poke 2D Arena</h2>
@@ -851,7 +941,9 @@
         <div>
           <div class="game-header">
             <div class="game-icon"><i class="fa-solid fa-shield-halved"></i></div>
-            <span class="game-category-tag">Defensa</span>
+            <div class="badges-container">
+              <span class="game-category-tag">Defensa</span>
+            </div>
           </div>
           <div class="game-info">
             <h2 class="game-title">Poke Defense</h2>
@@ -874,11 +966,14 @@
       </div>
 
       <!-- 3. Poke Jam -->
-      <div class="game-card" data-name="poke jam" data-category="Deportes" data-theme="electric">
+      <div class="game-card" data-name="poke jam" data-category="Deportes" data-theme="electric" data-mobile="si">
         <div>
           <div class="game-header">
             <div class="game-icon"><i class="fa-solid fa-basketball"></i></div>
-            <span class="game-category-tag">Deportes</span>
+            <div class="badges-container">
+              <span class="badge-mobile"><i class="fa-solid fa-mobile-screen"></i> Móvil</span>
+              <span class="game-category-tag">Deportes</span>
+            </div>
           </div>
           <div class="game-info">
             <h2 class="game-title">Poke Jam</h2>
@@ -905,7 +1000,9 @@
         <div>
           <div class="game-header">
             <div class="game-icon"><i class="fa-solid fa-bolt"></i></div>
-            <span class="game-category-tag">Combate</span>
+            <div class="badges-container">
+              <span class="game-category-tag">Combate</span>
+            </div>
           </div>
           <div class="game-info">
             <h2 class="game-title">Poke Versus</h2>
@@ -928,11 +1025,14 @@
       </div>
 
       <!-- 5. Kanto Tactics -->
-      <div class="game-card" data-name="kanto tactics einoow" data-category="Estrategia" data-theme="psychic">
+      <div class="game-card" data-name="kanto tactics einoow" data-category="Estrategia" data-theme="psychic" data-mobile="si">
         <div>
           <div class="game-header">
             <div class="game-icon"><i class="fa-solid fa-map"></i></div>
-            <span class="game-category-tag">Estrategia</span>
+            <div class="badges-container">
+              <span class="badge-mobile"><i class="fa-solid fa-mobile-screen"></i> Móvil</span>
+              <span class="game-category-tag">Estrategia</span>
+            </div>
           </div>
           <div class="game-info">
             <h2 class="game-title">Kanto Tactics</h2>
@@ -955,11 +1055,14 @@
       </div>
 
       <!-- 6. Poke Isaac -->
-      <div class="game-card" data-name="poke isaac" data-category="Roguelike" data-theme="dragon">
+      <div class="game-card" data-name="poke isaac" data-category="Roguelike" data-theme="dragon" data-mobile="si">
         <div>
           <div class="game-header">
             <div class="game-icon"><i class="fa-solid fa-skull"></i></div>
-            <span class="game-category-tag">Roguelike</span>
+            <div class="badges-container">
+              <span class="badge-mobile"><i class="fa-solid fa-mobile-screen"></i> Móvil</span>
+              <span class="game-category-tag">Roguelike</span>
+            </div>
           </div>
           <div class="game-info">
             <h2 class="game-title">Poke Isaac</h2>
@@ -986,7 +1089,9 @@
         <div>
           <div class="game-header">
             <div class="game-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
-            <span class="game-category-tag">Supervivencia</span>
+            <div class="badges-container">
+              <span class="game-category-tag">Supervivencia</span>
+            </div>
           </div>
           <div class="game-info">
             <h2 class="game-title">Poke Survivor</h2>
@@ -1013,7 +1118,9 @@
         <div>
           <div class="game-header">
             <div class="game-icon"><i class="fa-solid fa-shield"></i></div>
-            <span class="game-category-tag">Supervivencia</span>
+            <div class="badges-container">
+              <span class="game-category-tag">Supervivencia</span>
+            </div>
           </div>
           <div class="game-info">
             <h2 class="game-title">Poke Bonk</h2>
@@ -1040,7 +1147,9 @@
         <div>
           <div class="game-header">
             <div class="game-icon"><i class="fa-solid fa-chess"></i></div>
-            <span class="game-category-tag">Estrategia</span>
+            <div class="badges-container">
+              <span class="game-category-tag">Estrategia</span>
+            </div>
           </div>
           <div class="game-info">
             <h2 class="game-title">Poke Tactics</h2>
@@ -1063,11 +1172,14 @@
       </div>
 
       <!-- 10. Daily Red Game -->
-      <div class="game-card" data-name="daily red game" data-category="Puzzle" data-theme="water">
+      <div class="game-card" data-name="daily red game" data-category="Puzzle" data-theme="water" data-mobile="si">
         <div>
           <div class="game-header">
             <div class="game-icon"><i class="fa-solid fa-calendar-day"></i></div>
-            <span class="game-category-tag">Puzzle</span>
+            <div class="badges-container">
+              <span class="badge-mobile"><i class="fa-solid fa-mobile-screen"></i> Móvil</span>
+              <span class="game-category-tag">Puzzle</span>
+            </div>
           </div>
           <div class="game-info">
             <h2 class="game-title">Daily Red Game</h2>
@@ -1090,11 +1202,14 @@
       </div>
 
       <!-- 11. Poke Merge -->
-      <div class="game-card" data-name="poke merge" data-category="Roguelike" data-theme="electric">
+      <div class="game-card" data-name="poke merge" data-category="Roguelike" data-theme="electric" data-mobile="si">
         <div>
           <div class="game-header">
             <div class="game-icon"><i class="fa-solid fa-shapes"></i></div>
-            <span class="game-category-tag">Roguelike</span>
+            <div class="badges-container">
+              <span class="badge-mobile"><i class="fa-solid fa-mobile-screen"></i> Móvil</span>
+              <span class="game-category-tag">Roguelike</span>
+            </div>
           </div>
           <div class="game-info">
             <h2 class="game-title">Poke Merge</h2>
@@ -1121,7 +1236,9 @@
         <div>
           <div class="game-header">
             <div class="game-icon"><i class="fa-solid fa-crown"></i></div>
-            <span class="game-category-tag">Supervivencia</span>
+            <div class="badges-container">
+              <span class="game-category-tag">Supervivencia</span>
+            </div>
           </div>
           <div class="game-info">
             <h2 class="game-title">Pokemon Royale</h2>
@@ -1148,7 +1265,9 @@
         <div>
           <div class="game-header">
             <div class="game-icon"><i class="fa-solid fa-cube"></i></div>
-            <span class="game-category-tag">Estrategia</span>
+            <div class="badges-container">
+              <span class="game-category-tag">Estrategia</span>
+            </div>
           </div>
           <div class="game-info">
             <h2 class="game-title">Pokemon Redstone</h2>
@@ -1175,7 +1294,9 @@
         <div>
           <div class="game-header">
             <div class="game-icon"><i class="fa-solid fa-football"></i></div>
-            <span class="game-category-tag">Deportes</span>
+            <div class="badges-container">
+              <span class="game-category-tag">Deportes</span>
+            </div>
           </div>
           <div class="game-info">
             <h2 class="game-title">All 22 Pokémon</h2>
@@ -1198,11 +1319,14 @@
       </div>
 
       <!-- 15. Pokedoku -->
-      <div class="game-card" data-name="pokedoku" data-category="Puzzle" data-theme="grass">
+      <div class="game-card" data-name="pokedoku" data-category="Puzzle" data-theme="grass" data-mobile="si">
         <div>
           <div class="game-header">
             <div class="game-icon"><i class="fa-solid fa-table-cells"></i></div>
-            <span class="game-category-tag">Puzzle</span>
+            <div class="badges-container">
+              <span class="badge-mobile"><i class="fa-solid fa-mobile-screen"></i> Móvil</span>
+              <span class="game-category-tag">Puzzle</span>
+            </div>
           </div>
           <div class="game-info">
             <h2 class="game-title">Pokedoku</h2>
@@ -1225,11 +1349,14 @@
       </div>
 
       <!-- 16. Pokedle -->
-      <div class="game-card" data-name="pokedle" data-category="Puzzle" data-theme="dragon">
+      <div class="game-card" data-name="pokedle" data-category="Puzzle" data-theme="dragon" data-mobile="si">
         <div>
           <div class="game-header">
             <div class="game-icon"><i class="fa-solid fa-font"></i></div>
-            <span class="game-category-tag">Puzzle</span>
+            <div class="badges-container">
+              <span class="badge-mobile"><i class="fa-solid fa-mobile-screen"></i> Móvil</span>
+              <span class="game-category-tag">Puzzle</span>
+            </div>
           </div>
           <div class="game-info">
             <h2 class="game-title">Pokedle</h2>
@@ -1320,7 +1447,8 @@
     const toast = document.getElementById('toast');
     const toastMsg = document.getElementById('toastMsg');
 
-    // Elementos del Modal
+    // Botones especiales
+    const btnRandomGame = document.getElementById('btnRandomGame');
     const btnOpenModal = document.getElementById('btnOpenModal');
     const btnCloseModal = document.getElementById('btnCloseModal');
     const btnCancelModal = document.getElementById('btnCancelModal');
@@ -1330,7 +1458,6 @@
 
     let activeCategory = 'all';
 
-    // Mapas de temas e íconos para juegos nuevos que vengan del Sheet
     const categoryThemeMap = {
       'Combate': { theme: 'fire', icon: 'fa-bolt' },
       'Defensa': { theme: 'grass', icon: 'fa-shield-halved' },
@@ -1410,6 +1537,34 @@
       }, 2500);
     }
 
+    // -------------------------------------------------------------
+    // LÓGICA DEL BOTÓN: JUEGO ALEATORIO
+    // -------------------------------------------------------------
+    btnRandomGame.addEventListener('click', () => {
+      // Elige entre los juegos visibles actualmente según la búsqueda o filtro
+      const allCards = Array.from(gamesGrid.getElementsByClassName('game-card'));
+      const visibleCards = allCards.filter(card => card.style.display !== 'none');
+      const targetPool = visibleCards.length > 0 ? visibleCards : allCards;
+
+      if (targetPool.length === 0) return;
+
+      const randomCard = targetPool[Math.floor(Math.random() * targetPool.length)];
+      const title = randomCard.querySelector('.game-title').textContent;
+      const launchLink = randomCard.querySelector('.btn-launch').href;
+
+      // Desplaza suavemente hacia la tarjeta y emite un pulso visual
+      randomCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      randomCard.classList.remove('highlight-pulse');
+      void randomCard.offsetWidth; // fuerza reflow para reiniciar animación
+      randomCard.classList.add('highlight-pulse');
+
+      showToast(`¡Destino elegido: ${title}! 🎲 Abriendo juego...`);
+
+      setTimeout(() => {
+        window.open(launchLink, '_blank');
+      }, 450);
+    });
+
     // Modal Control
     btnOpenModal.addEventListener('click', () => modalBackdrop.classList.add('open'));
     [btnCloseModal, btnCancelModal].forEach(btn => {
@@ -1422,7 +1577,7 @@
     // -------------------------------------------------------------
     // LEER JUEGOS DESDE GOOGLE SHEETS
     // -------------------------------------------------------------
-   async function loadGamesFromSheet() {
+    async function loadGamesFromSheet() {
       if (!SCRIPT_URL) return;
 
       try {
@@ -1433,29 +1588,36 @@
           .map(a => a.href.replace(/\/$/, ""));
 
         games.forEach(rawGame => {
-          // Extrae los valores sin importar mayúsculas o claves anómalas
           const nombre = rawGame.nombre || rawGame.Nombre || "";
           const url = rawGame.url || rawGame.Url || rawGame.URL || "";
-          const cat = rawGame.categoria || rawGame.Categoria || rawGame[""] || "Roguelike";
+          const cat = rawGame.categoria || rawGame.Categoria || rawGame[""] || "Combate";
+          const esMovil = (rawGame.movil || rawGame.Movil || "").toLowerCase().trim() === "si";
 
           if (!nombre || !url) return;
 
           const cleanUrl = String(url).trim().replace(/\/$/, "");
           if (existingUrls.includes(cleanUrl)) return;
 
-          const meta = categoryThemeMap[cat] || { theme: 'dragon', icon: 'fa-skull' };
+          const meta = categoryThemeMap[cat] || { theme: 'dragon', icon: 'fa-gamepad' };
+          const mobileBadgeHtml = esMovil 
+            ? `<span class="badge-mobile"><i class="fa-solid fa-mobile-screen"></i> Móvil</span>` 
+            : "";
 
           const card = document.createElement('div');
           card.className = 'game-card';
           card.setAttribute('data-name', nombre.toLowerCase());
           card.setAttribute('data-category', cat);
           card.setAttribute('data-theme', meta.theme);
+          if (esMovil) card.setAttribute('data-mobile', 'si');
 
           card.innerHTML = `
             <div>
               <div class="game-header">
                 <div class="game-icon"><i class="fa-solid ${meta.icon}"></i></div>
-                <span class="game-category-tag">${cat}</span>
+                <div class="badges-container">
+                  ${mobileBadgeHtml}
+                  <span class="game-category-tag">${cat}</span>
+                </div>
               </div>
               <div class="game-info">
                 <h2 class="game-title">${nombre}</h2>
@@ -1526,7 +1688,6 @@
       }
     });
 
-    // Iniciar lectura
     loadGamesFromSheet();
   </script>
 
